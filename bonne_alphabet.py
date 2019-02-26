@@ -4,11 +4,7 @@ import copy as cp
 
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Feb 25 09:26:44 2019
 
-@author: hlbath
-"""
 import copy as cp
 
 ################ Question 1 : nombre min d'inversions #############################
