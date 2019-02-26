@@ -9,7 +9,7 @@ Created on Mon Feb 25 09:26:44 2019
 
 @author: hlbath
 """
-import copy as cp
+
 
 ################ Question 1 : nombre min d'inversions #############################
 
@@ -51,68 +51,111 @@ def Score(L):
         score+=1
     return score
 
-##def MinInvers(L):
-#    """ trouve le nombre min d'inversions nécessaires pour mettre la liste de caractères L dans l'ordre alphabétique"""
-#    ### trouver l'indice de la plus petite lettre
-
-
 
 def end_ord(l) :
 	"""prend en argument une liste de codes ASCII et renvoie l'indice de la première lettre qui n'est plus dans l'ordre alphabetique"""
 	ind=0
-	while l[ind+1]==l[ind]+1:
-		ind+=1
-	return ind+1
+	if Score(l) < len(l)+1 :
+		while l[ind+1]==l[ind]+1:
+			ind+=1
+		return ind+1
+	else :
+		print("The sequence is sorted")
+		return(len(l))
+		
 
 #print(end_ord(L1))
 
-def main(l):
+def main(l,nb_inv):
 	""" prend en argument une liste de chaine de caractères composées de lettre de l'alphabet retourne le nobre minimum d'inversions necessaires pour obtenir une liste dans m'ordre alphabetique"""
-	nb_inv=0#initialisation du nombre d'inversion
-	l_ascii=ConvertAsci(l) #converti en liste de code ascii
+	#initialisation du nombre d'inversion
+	print("l " , l )
+	l_ascii= l #ConvertAsci(l) #converti en liste de code ascii
+	print("ConvertAsci", l_ascii)
 	s=Score(l_ascii)#score initial de la sequence
+	print("Score 1  :  ", s)
+	l_nb_inv =[]
+	if s == len(l_ascii)+1:
+		return 0
+	else:
+		P = permutation(l_ascii, s) 
+		print("P", permutation)
+		nb_inv +=1
+		print('nb_inv', nb_inv)
+		for i in range(len(P)) :
+			print("i", i)
+			return main(P[i][0] , nb_inv)
+
+
+
+
+
+
+
+	# while s != len(l_ascii)+1: # Si la série n'est pas délà triée 
+	# 	P = permutation(l_ascii, s) 
+	# 	print('P', P )
+	# 	nb_inv +=1 # Une inversion a été nécessaire
+	# 	for ele in P :
+	# 		l_ascii = ele[0]
+	# 		s = ele[1]  
+	# 		while s != len(l_ascii)+1: # Tant que la série n'est pas triée
+	# 			P = permutation(l_ascii, s)
+	# 			print("P", P)
+	# 			l_ascii = P[0][0]
+	# 			s = P[0][1]
+	# 			nb_inv 	+=1
+	# 			print("NB INV" , nb_inv )
+	# 	l_nb_inv.append(nb_inv)		
+	# return l_nb_inv
 	
-
-
 
 def permutation(liste_ascii, current_score):
 	"""permutation takes as input a liste of ascii and the current  score. It returns list of tuple, each element contains
 	the list of ascii and the score linked to this permutation """
+	#print("before" , liste_ascii)
 	sorted_to =  end_ord(liste_ascii) # Retourne l'indice de la lettre qui n'est plus dans l'ordre
-	#print("BEFORE" , "liste ascii "  , liste_ascii , "current score " , current_score )
-	#print(" liste ascii ever sorted  "  , liste_ascii[ : sorted_to])
+	print("sorted_to", sorted_to)
 	min_letter= liste_ascii.index(min(liste_ascii[ sorted_to :]))
-	#print(" min letter  "  , min_letter)
+	#print("min letter", min_letter)
 	seq_to_permute =liste_ascii[ sorted_to :min_letter + 1]  
-	#print(" seq _ to permute  "  , seq_to_permute)
-	score_before_permut = Score(liste_ascii)
+	#print("seq_to_permute", seq_to_permute)
 	seq_after_permutation =[]
+	#print("current_score " , current_score)
 	res = []
 	for i in range(len(seq_to_permute)):
 		seq_inv = Inversion(seq_to_permute[i:])
-		#print("seq_inv" , seq_inv )
-		seq_after_permutation = liste_ascii[:sorted_to] +seq_inv +liste_ascii[min_letter+1:]
-		#print ("seq_after_permutation" , seq_after_permutation)
+		#print("seq_inv", seq_inv)
+		seq_after_permutation = liste_ascii[:sorted_to+i] +seq_inv +liste_ascii[min_letter+1:]
+		#print("seq_after_permutation" , seq_after_permutation)
 		c_score = Score(seq_after_permutation)
-		#print("c_score" , c_score , "current score" , current_score)
+		#print("c_score" , c_score)
 		if c_score > current_score:
-			
+		#	print(" c_score > current_score  => T")
 			res.append((seq_after_permutation , c_score ))
-		print("res" , res) 
 	return res
 			
 
 
 
-L=["a","c","d","b"]
-L1=[1,2,3,5,4]
+
+
 mot1 = "abcd" 
 print(Inversion(mot1))
-print(ord('A'))
-print(chr(65))                                                                                                                                           
-
+L1 = ConvertAsci(mot1)
+print("Dernière en ordre" , end_ord(L1))
 mot2 = "abcdlhfekijgm"
-to_ascii_2 = ConvertAsci(mot2)
-Score2 = Score(to_ascii_2)
-print(permutation(to_ascii_2 , Score2))
+l2 = ConvertAsci(mot2)
+print("mot 2" , mot2)
+print(permutation(l2, Score(l2)))
+P2 = permutation(l2, Score(l2))
+print(P2[0][0])
+#print("\n MAIN \n ",  main(l2,0))
+mot3 = "abcde"
+l3 = ConvertAsci(mot3)
+print("\n MOt 3 SCORE   : ", Score(l3)) 
+print("\n  PERMUTATION DE MOT 3 :" , permutation(l3, Score(l3)))
+#to_ascii_2 = ConvertAsci(mot2)
+#Score2 = Score(to_ascii_2)
 
+#print("\n \n  MAIN  : " , main(mot2))
