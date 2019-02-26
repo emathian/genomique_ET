@@ -115,24 +115,26 @@ def permutation(liste_ascii, current_score):
 	the list of ascii and the score linked to this permutation """
 	#print("before" , liste_ascii)
 	sorted_to =  end_ord(liste_ascii) # Retourne l'indice de la lettre qui n'est plus dans l'ordre
-	print("sorted_to", sorted_to)
-	min_letter= liste_ascii.index(min(liste_ascii[ sorted_to :]))
-	#print("min letter", min_letter)
-	seq_to_permute =liste_ascii[ sorted_to :min_letter + 1]  
-	#print("seq_to_permute", seq_to_permute)
-	seq_after_permutation =[]
-	#print("current_score " , current_score)
-	res = []
-	for i in range(len(seq_to_permute)):
-		seq_inv = Inversion(seq_to_permute[i:])
-		#print("seq_inv", seq_inv)
-		seq_after_permutation = liste_ascii[:sorted_to+i] +seq_inv +liste_ascii[min_letter+1:]
-		#print("seq_after_permutation" , seq_after_permutation)
-		c_score = Score(seq_after_permutation)
-		#print("c_score" , c_score)
-		if c_score > current_score:
-		#	print(" c_score > current_score  => T")
-			res.append((seq_after_permutation , c_score ))
+	if sorted_to != len(liste_ascii):
+
+		print("sorted_to", sorted_to)
+		min_letter= liste_ascii.index(min(liste_ascii[ sorted_to :]))
+		#print("min letter", min_letter)
+		seq_to_permute =liste_ascii[ sorted_to :min_letter + 1]  
+		#print("seq_to_permute", seq_to_permute)
+		seq_after_permutation =[]
+		#print("current_score " , current_score)
+		res = []
+		for i in range(len(seq_to_permute)):
+			seq_inv = Inversion(seq_to_permute[i:])
+			#print("seq_inv", seq_inv)
+			seq_after_permutation = liste_ascii[:sorted_to+i] +seq_inv +liste_ascii[min_letter+1:]
+			#print("seq_after_permutation" , seq_after_permutation)
+			c_score = Score(seq_after_permutation)
+			#print("c_score" , c_score)
+			if c_score > current_score:
+			#	print(" c_score > current_score  => T")
+				res.append((seq_after_permutation , c_score ))
 	return res
 			
 
