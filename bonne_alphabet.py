@@ -64,42 +64,38 @@ def end_ord(l) :
 def main(l):
 	""" prend en argument une liste de chaine de caractères composées de lettre de l'alphabet retourne
 	 le nobre minimum d'inversions necessaires pour obtenir une liste dans m'ordre alphabetique"""
-	# Pour l'instant elle retourne la liste complete
+	#
 
 	l_ascii= ConvertAsci(l) #converti en liste de code ascii
 	s=Score(l_ascii) #score initial de la sequence
 	l_nb_inv = [] # Liste du nombre d'inversion nécessaire par "branche"
-
-	P  = permutation(l_ascii , s ) # Stack (je crois )
+	d = 0
+	P  = permutation(l_ascii , s , d ) # Stack (je crois )
 	nb_inv = 0
 
 	while len(P) != 0 : # Tant que la pile n'est pas vide 
 		nb_inv += 1 # On augmente le compteur pour la "branche" parcourue
 		l_ascii = P[0][0] # On récupère le premier élement de la pile 
 		s = P[0][1] # Score du premier elmt de la pile
+		d = P[0][2] # Distance à l'origine du premier éléement de la pile
 
 		if s!= len(l_ascii)+1  : # Si la seqence n'est pas triee
-			p = permutation(l_ascii , s) # permutation du premier elmt
+			
+			p = permutation(l_ascii , s , d) # permutation du premier elmt
 			P= P[1:] # Retire la permutation en cours de traitement 
 			P = p+ P # Ajoute les résultats de "permutation" en tête de liste
 		
 		else : # On a finis de trier une "branche"
+			l_nb_inv.append(P[0][2]) # On ajoute à la liste des résultats le nombre de permutation nécessaire pour obtenir un succes
 			P= P[1:] # On enlève la permutation ayant conduit au succès
-			l_nb_inv.append(nb_inv) # On ajoute à la liste des résultats le nombre de permutation nécessaire pour obtenir un succes
-			nb_inv = 0 # Et on réinitialise le score
-
-			""" ÇA FONCTIONNE A MOITIE CAR IL FAUDRAIT RETENIR LES SCORES INTERMEDIAIRES 
-			ICI LE SCORE DE LA PREMIÈRE BRANCHE EST CORRECTE MAIS LE SCORE DES BRANCHES INTERMEDIAIRES CAD ELOIGNEES DE L'ORIGINE
-			EST REINTIALISE A ZERO ALORS QU IL NE SONT JUSTEMENT PAS A L ORIGINE. JE N ARRIVE PAS A DISTINGUER LES BIFFURCATION 
-			PARTANT DE L ORIGINE ET LES AUTRES. 
-			BREF ECHEC !!! """
+			#nb_inv = 0 # Et on réinitialise le score
 		
-	return l_nb_inv
+	return min(l_nb_inv)
 
 
 
-def permutation(liste_ascii, current_score):
-	"""Permutation prend en argument une liste d'entier correspondant au code ascii et le score associé à cette liste. 
+def permutation(liste_ascii, current_score, dist):
+	"""Permutation prend en argument une liste d'entier correspondant au code ascii et le score associé à cette liste, et la distance de l'origine. 
 	Cette fonction retourne une liste des permutations ayant permis d'améliorer ou de conserver le score pris en argument. """
 
 	sorted_to =  end_ord(liste_ascii) # Retourne l'indice de la lettre qui n'est plus dans l'ordre
@@ -139,7 +135,7 @@ def permutation(liste_ascii, current_score):
 			c_score = Score(seq_after_permutation) # Calcul du nouveau score
 	
 			if c_score >= current_score: # Si on a une amélioration ou une égalité (C'EST JUSTE ÇA ???)
-				res.append((seq_after_permutation , c_score )) # On retient la permutation			
+				res.append((seq_after_permutation , c_score , dist+1 )) # On retient la permutation			
 		return res
 
 	else: # Tout est déjà fait ;)
@@ -153,7 +149,7 @@ def permutation(liste_ascii, current_score):
 print("\n MOT 1  ")
 mot1 = "bcaed" 
 L1 = ConvertAsci(mot1)
-P1  = permutation(L1, Score(L1))
+P1  = permutation(L1, Score(L1), 0)
 print("Adjacence L1  : ", Adjacent(L1))
 print("Score  ", Score(L1))
 print("Trie jusqu a : ", end_ord(L1))
@@ -163,7 +159,7 @@ print("Permutation P1 " , P1)
 print("\n MOT 2  ")
 mot2 = "abedc" 
 L2 = ConvertAsci(mot2)
-P2  = permutation(L2, Score(L2))
+P2  = permutation(L2, Score(L2),0)
 print("P2", P2)
 
 
@@ -173,7 +169,7 @@ mot3 = "acbdfe"
 L3 = ConvertAsci(mot3)
 print("Adjacence L3  : ", Adjacent(L3))
 print("Score  ", Score(L3))
-P3  = permutation(L3, Score(L3))
+P3  = permutation(L3, Score(L3),0)
 print("P3", P3)
 
 
@@ -181,7 +177,7 @@ print("\n MOT 3  ")
 mot3 = "bcadfe"
 L3 = ConvertAsci(mot3)
 print("TRie jusqua : ", end_ord(L3))
-P3  = permutation(L3, Score(L3))
+P3  = permutation(L3, Score(L3),0)
 print("P1", P3)
 print("\n")
 print('\n MAin    :    \n' , main("bcadfe")  )
@@ -192,7 +188,7 @@ print("\n MOT Exemple cours   ")
 mot4 = "lhfebadckijgm"
 L4 = ConvertAsci(mot4)
 print("Trie jusqua : ", end_ord(L4))
-P4  = permutation(L4, Score(L4))
+P4  = permutation(L4, Score(L4),0)
 print("P4", P4)
 
 print('\n')
