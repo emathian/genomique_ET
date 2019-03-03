@@ -76,23 +76,29 @@ def main(l):
 	P  = permutation(l_ascii , s ) # Stack
 	print("Vecteur de permutation BEFORE the while ", P)
 	nb_inv = 0
-	while len(P) != 0 : # Tant que la pile n'est pas vide 
+	c= 0
+	while len(P) != 0 | c<5: # Tant que la pile n'est pas vide 
 		nb_inv += 1
 		l_ascii = P[0][0]
 		s = P[0][1]
+		c+=1
 		print ('Score ' , s)
-		print ('l ascii after permutation ' , l_ascii)
+		print ('seq en cours ' , l_ascii)
 		print ('NB INVERSION  ' , nb_inv)
-		if s!= len(l_ascii)+1  : # Si la seqence n'est pas trier
+		if s!= len(l_ascii)+1  : # Si la seqence n'est pas triee
+			#sort_to = end_ord(l_ascii)
+			#print("sort to", sort_to)
+			#print("liste dans permutation", l_ascii[ sort_to+1: ])
 			p = permutation(l_ascii , s)
 			P.pop() # Retire la permutation en cours de traitement 
-			P = P + p # Commande préférable à append pour éviter l'obtention de liste de liste 
+			P = p+ P # Commande préférable à append pour éviter l'obtention de liste de liste 
 			print("Vecteur de permutation ", P)
 		else :
 			P.pop()
 			l_nb_inv.append(nb_inv)
 			print('l_nb_inv' , l_nb_inv)
 			nb_inv = 0
+		
 	return l_nb_inv
 
 
@@ -148,7 +154,7 @@ def permutation(liste_ascii, current_score):
 	the list of ascii and the score linked to this permutation """
 	print('liste ascii berfore permutaton   : ' , liste_ascii)
 	sorted_to =  end_ord(liste_ascii) # Retourne l'indice de la lettre qui n'est plus dans l'ordre
-	
+	Spe_cond = False
 	if sorted_to != len(liste_ascii):
 		print("sorted_to    :   ", sorted_to)
 		min_letter= liste_ascii.index(min(liste_ascii[ sorted_to :]))
@@ -156,7 +162,14 @@ def permutation(liste_ascii, current_score):
 		if sorted_to != min_letter :
 			seq_to_permute =liste_ascii[ sorted_to :min_letter + 1]  
 		else : # Permutation du premier element
-			seq_to_permute =liste_ascii[ : sorted_to  + 1]  
+			print("SORTED TO = MIN LETTER \n")
+			if min_letter != 0:
+				seq_to_permute =liste_ascii[ : sorted_to  + 1]  
+			else :
+				Spe_cond = True
+				min_letter= liste_ascii.index(min(liste_ascii[ 1 :]))
+				print("min_letter in spe cond", min_letter)
+				seq_to_permute =liste_ascii[ 1: min_letter + 1]  
 		print("seq_to_permute", seq_to_permute)
 		seq_after_permutation =[]
 		print("current_score " , current_score)
@@ -166,8 +179,13 @@ def permutation(liste_ascii, current_score):
 			seq_inv = Inversion(seq_to_permute[i:])
 			print("seq_inv", seq_inv)
 			if sorted_to != min_letter :
-				seq_after_permutation = liste_ascii[:sorted_to+i] +seq_inv +liste_ascii[min_letter+1:]
-				print("seq_after_permutation" , seq_after_permutation)
+				if Spe_cond == False:
+					seq_after_permutation = liste_ascii[:sorted_to+i] +seq_inv + liste_ascii[min_letter+1:]
+					print("seq_after_permutation" , seq_after_permutation)
+				else : 
+					first_elmt = [liste_ascii[0]]
+					seq_after_permutation = first_elmt+ seq_inv +  liste_ascii[min_letter+1:]
+					print("seq_after_permutation" , seq_after_permutation)
 			else :
 				if len(seq_to_permute)== len(seq_inv):
 					seq_after_permutation = seq_inv +liste_ascii[min_letter+1:]
@@ -227,6 +245,19 @@ print("P1", P1)
 # print("PP		: "   , P2 ,
 # 	"\n  PP[0]" , P2[0] ,
 # 	"\n  PP[1]" , P2[1])
+
+
+print("\n MOT 4  ")
+mot1 = "acbdfe" 
+# print(Inversion(mot1))
+L1 = ConvertAsci(mot1)
+# print("Dernière en ordre" , end_ord(L1))
+print("Adjacence L1  : ", Adjacent(L1))
+print("Score  ", Score(L1))
+print("TRie jusqua : ", end_ord(L1))
+P1  = permutation(L1, Score(L1))
+print("P1", P1)
+
 
 print("\n MOT 3  ")
 mot3 = "bcadfe"
