@@ -4,11 +4,7 @@ import copy as cp
 
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Mon Feb 25 09:26:44 2019
 
-@author: hlbath
-"""
 
 
 ################ Question 1 : nombre min d'inversions #############################
@@ -48,6 +44,7 @@ def Score(L):
     if L.index(min(L))==0:
         score+=1
     if L.index(max(L))==len(L)-1:
+    	
         score+=1
     return score
 
@@ -62,9 +59,7 @@ def end_ord(l) :
 		return 0
 	else :
 		return ind+1
-	
 
-#print(end_ord(L1))
 
 def main(l):
 
@@ -153,6 +148,7 @@ def permutation(liste_ascii, current_score):
 	the list of ascii and the score linked to this permutation """
 	print('liste ascii berfore permutaton   : ' , liste_ascii)
 	sorted_to =  end_ord(liste_ascii) # Retourne l'indice de la lettre qui n'est plus dans l'ordre
+	
 	if sorted_to != len(liste_ascii):
 		print("sorted_to    :   ", sorted_to)
 		min_letter= liste_ascii.index(min(liste_ascii[ sorted_to :]))
@@ -165,14 +161,20 @@ def permutation(liste_ascii, current_score):
 		seq_after_permutation =[]
 		print("current_score " , current_score)
 		res = []
-		for i in range(len(seq_to_permute)):
+		for i in range(len(seq_to_permute)-1):
+			print('iteration i', i)
 			seq_inv = Inversion(seq_to_permute[i:])
 			print("seq_inv", seq_inv)
 			if sorted_to != min_letter :
 				seq_after_permutation = liste_ascii[:sorted_to+i] +seq_inv +liste_ascii[min_letter+1:]
+				print("seq_after_permutation" , seq_after_permutation)
 			else :
-				seq_after_permutation = seq_inv +liste_ascii[min_letter+1:]
-			print("seq_after_permutation" , seq_after_permutation)
+				if len(seq_to_permute)== len(seq_inv):
+					seq_after_permutation = seq_inv +liste_ascii[min_letter+1:]
+					print("seq_after_permutation" , seq_after_permutation)
+				else :
+					seq_after_permutation = liste_ascii[:len(seq_to_permute)-len(seq_inv)]+seq_inv+liste_ascii[min_letter+1:]
+					print("seq_after_permutation" , seq_after_permutation)
 			c_score = Score(seq_after_permutation)
 			print("c_score" , c_score)
 			if c_score > current_score:
@@ -201,6 +203,9 @@ mot1 = "abedc"
 # print(Inversion(mot1))
 L1 = ConvertAsci(mot1)
 # print("Dernière en ordre" , end_ord(L1))
+print("Adjacence L1  : ", Adjacent(L1))
+print("Score  ", Score(L1))
+print("TRie jusqua : ", end_ord(L1))
 P1  = permutation(L1, Score(L1))
 print("P1", P1)
 # mot2 = "abcdlhfekijgm"
@@ -222,6 +227,14 @@ print("P1", P1)
 # print("PP		: "   , P2 ,
 # 	"\n  PP[0]" , P2[0] ,
 # 	"\n  PP[1]" , P2[1])
+
+print("\n MOT 3  ")
+mot3 = "bcadfe"
+L3 = ConvertAsci(mot3)
+print("TRie jusqua : ", end_ord(L3))
+P3  = permutation(L3, Score(L3))
+print("P1", P3)
+
 print("\n")
 #print('\n MAin    :    \n' , main("baedc")  )
 print('\n MAin    :    \n' , main("bcadfe")  )
