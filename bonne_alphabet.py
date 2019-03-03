@@ -66,7 +66,8 @@ def main(l):
 
 	""" prend en argument une liste de chaine de caractères composées de lettre de l'alphabet retourne le nobre minimum d'inversions necessaires pour obtenir une liste dans m'ordre alphabetique"""
 	#initialisation du nombre d'inversion
-	print("MOT   : " , l )
+	print("\n")
+	print("\n MOT   : " , l )
 	l_ascii= ConvertAsci(l) #converti en liste de code ascii
 	print("ConvertAsci", l_ascii)
 	s=Score(l_ascii)#score initial de la sequence
@@ -74,27 +75,32 @@ def main(l):
 	l_nb_inv = []
 
 	P  = permutation(l_ascii , s ) # Stack
-	print("Vecteur de permutation BEFORE the while ", P)
+	print("\n")
+	print("\n  Vecteur de permutation BEFORE the while ", P)
 	nb_inv = 0
-	c= 0
-	while len(P) != 0 | c<5: # Tant que la pile n'est pas vide 
+
+	while len(P) != 0 : # Tant que la pile n'est pas vide 
+		print("\nIN WHILE")
 		nb_inv += 1
 		l_ascii = P[0][0]
 		s = P[0][1]
-		c+=1
 		print ('Score ' , s)
 		print ('seq en cours ' , l_ascii)
 		print ('NB INVERSION  ' , nb_inv)
+		print ('condition insucces ',s!= len(l_ascii)+1  )
 		if s!= len(l_ascii)+1  : # Si la seqence n'est pas triee
 			#sort_to = end_ord(l_ascii)
 			#print("sort to", sort_to)
 			#print("liste dans permutation", l_ascii[ sort_to+1: ])
 			p = permutation(l_ascii , s)
-			P.pop() # Retire la permutation en cours de traitement 
+			P= P[1:]# Retire la permutation en cours de traitement 
 			P = p+ P # Commande préférable à append pour éviter l'obtention de liste de liste 
-			print("Vecteur de permutation ", P)
+			print("\n")
+			print("\n Vecteur de permutation ", P)
+		
 		else :
-			P.pop()
+			print("succes")
+			P= P[1:]
 			l_nb_inv.append(nb_inv)
 			print('l_nb_inv' , l_nb_inv)
 			nb_inv = 0
@@ -102,52 +108,6 @@ def main(l):
 	return l_nb_inv
 
 
-	# """ prend en argument une liste de chaine de caractères composées de lettre de l'alphabet retourne le nobre minimum d'inversions necessaires pour obtenir une liste dans m'ordre alphabetique"""
-	# #initialisation du nombre d'inversion
-	# print("MOT   : " , l )
-	# l_ascii= ConvertAsci(l) #converti en liste de code ascii
-	# print("ConvertAsci", l_ascii)
-	# s=Score(l_ascii)#score initial de la sequence
-	# print("Score 1  :  ", s)
-	# l_nb_inv = []
-	# if s!= len(l_ascii) +1 :
-	# 	P  = permutation(l_ascii , s ) # Stack
-	# 	print("Vecteur de permutation BEFORE the while ", P)
-	# 	nb_inv = 1 
-	# 	l_nb_inv.append(nb_inv)
-	# while len(P) != 0 : # Tant que la pile n'est pas vide 
-	# 	if s!= len(l_ascii)+1  : # Si la seqence n'est pas trier
-	# 		l_ascii = P[0][0]
-	# 		print ('l ascii after permutation ' , l_ascii)
-	# 		s = P[0][1]
-	# 		print ('Score ' , s)
-	# 		p = permutation(l_ascii , s)
-	# 		P.pop() # Retire la permutation en cours de traitement 
-	# 		P = P + p # Commande préférable à append pour éviter l'obtention de liste de liste 
-	# 		print("Vecteur de permutation ", P)
-	# 		nb_inv +=1 
-	# 	else :
-	# 		l_nb_inv.append(nb_inv)
-
-	# return l_nb_inv
-
-	# # while s != len(l_ascii)+1: # Si la série n'est pas délà triée 
-	# 	P = permutation(l_ascii, s) 
-	# 	print('P', P )
-	# 	nb_inv +=1 # Une inversion a été nécessaire
-	# 	for ele in P :
-	# 		l_ascii = ele[0]
-	# 		s = ele[1]  
-	# 		while s != len(l_ascii)+1: # Tant que la série n'est pas triée
-	# 			P = permutation(l_ascii, s)
-	# 			print("P", P)
-	# 			l_ascii = P[0][0]
-	# 			s = P[0][1]
-	# 			nb_inv 	+=1
-	# 			print("NB INV" , nb_inv )
-	# 	l_nb_inv.append(nb_inv)		
-	# return l_nb_inv
-	
 
 def permutation(liste_ascii, current_score):
 	"""permutation takes as input a liste of ascii and the current  score. It returns list of tuple, each element contains
@@ -195,7 +155,7 @@ def permutation(liste_ascii, current_score):
 					print("seq_after_permutation" , seq_after_permutation)
 			c_score = Score(seq_after_permutation)
 			print("c_score" , c_score)
-			if c_score > current_score:
+			if c_score >= current_score:
 				print(" c_score > current_score  => T")
 				res.append((seq_after_permutation , c_score ))			
 		return res
@@ -265,11 +225,20 @@ L3 = ConvertAsci(mot3)
 print("TRie jusqua : ", end_ord(L3))
 P3  = permutation(L3, Score(L3))
 print("P1", P3)
+print("\n")
+print('\n MAin    :    \n' , main("bcadfe")  )
+
+
+print('\n')
+print('\n')
+print('\n')
+print("\n MOT Exemple cours   ")
+mot3 = "lhfebadckijgm"
+L3 = ConvertAsci(mot3)
+print("TRie jusqua : ", end_ord(L3))
+P3  = permutation(L3, Score(L3))
+print("P1", P3)
 
 print("\n")
 #print('\n MAin    :    \n' , main("baedc")  )
-print('\n MAin    :    \n' , main("bcadfe")  )
-#to_ascii_2 = ConvertAsci(mot2)
-#Score2 = Score(to_ascii_2)
-
-#print("\n \n  MAIN  : " , main(mot2))
+print('\n MAin    :    \n' , main("lhfebadckijgm")  )
