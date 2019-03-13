@@ -61,16 +61,19 @@ def end_ord(l) :
 		return ind+1
 
 
-def main(l):
+def nb_inversion(l):
 	""" prend en argument une liste de chaine de caractères composées de lettre de l'alphabet retourne
 	 le nobre minimum d'inversions necessaires pour obtenir une liste dans m'ordre alphabetique"""
-	#
 
-	l_ascii= ConvertAsci(l) #converti en liste de code ascii
+	if isinstance(l, str):
+		l_ascii= ConvertAsci(l) #converti en liste de code ascii
+	else:
+		l_ascii = l
 	s=Score(l_ascii) #score initial de la sequence
 	l_nb_inv = [] # Liste du nombre d'inversion nécessaire par "branche"
 	d = 0
-	P  = permutation(l_ascii , s , d ) # Stack (je crois )
+	P  = permutation(l_ascii , s , d ) # Stack 
+	print("Permutation initile : ", P)
 	nb_inv = 0
 
 	while len(P) != 0 : # Tant que la pile n'est pas vide 
@@ -140,11 +143,27 @@ def permutation(liste_ascii, current_score, dist):
 
 	else: # Tout est déjà fait ;)
 		print('The sequence is ever sorted') 
-		return []	# On retourne une liste vide qui est nécessaire pour la gestion de la pile du main (ou qui était nécessaire je sais plus)
+		return []	# On retourne une liste vide qui est nécessaire pour la gestion de la pile de la fonction (ou qui était nécessaire je sais plus)
 			
+def seq_aleatoire(l_ascii):
+	"Permet de générer une séquence alétoire de même composition que celle passée en argument"
+	random.shuffle(l_ascii)
+	return l_ascii
 
+def scenario_aleatoire(l,runs):
+	"""Scenario aleatoire prend en argument une liste d'entier correspondant au code ascii d'une séquence
+	et un nombre de simulations (runs). Cette fonction calcule le nombre d'inversions nécessaires
+	pour trier une séquence aléatoire et retournera une liste contenant le nombre d'inversion minimal qui 
+	a été nécessaire pour résoudre chaque simulation (séquence aléatoire), ainsi que le nombre d'inversion moyen. """
 
-
+	res =[]
+	for i in range(runs):
+		print('i : ', i)
+		L = seq_aleatoire(l)
+		c_res = nb_inversion(L)
+		res.append(c_res)
+	moy_dist= sum(res)/len(res)
+	return res, moy_dist
 
 print("\n MOT 1  ")
 mot1 = "bcaed" 
@@ -174,13 +193,13 @@ print("P3", P3)
 
 
 print("\n MOT 3  ")
-mot3 = "bcadfe"
+mot3 = "bcadfegih"
 L3 = ConvertAsci(mot3)
 print("TRie jusqua : ", end_ord(L3))
 P3  = permutation(L3, Score(L3),0)
 print("P1", P3)
 print("\n")
-print('\n MAin    :    \n' , main("bcadfe")  )
+print('\n  Nb inversion obs   :    \n' , nb_inversion("bcadfe")  )
 
 
 
@@ -192,7 +211,17 @@ P4  = permutation(L4, Score(L4),0)
 print("P4", P4)
 
 print('\n')
-print('\n ET LA C EST LE DRAME ! ')
 print('\n')
-print("\n")
-print('\n MAin    :    \n' , main("lhfebadckijgm")  )
+print('\n Nb inversion obs   :    \n' , nb_inversion("lhfebadckijgm")  )
+print('\n scenario_aleatoire de L4  :',  scenario_aleatoire(L4,4)[0], 'Distance moy', scenario_aleatoire(L4,4)[1] )
+
+
+# Un peu plus long 
+print('\n')
+mot5 = "ailgkjmbcefhd"
+L5= ConvertAsci(mot5)
+print("Trie jusqua : ", end_ord(L5))
+P5 = permutation(L5, Score(L5),0)
+print("P5", P5)
+print('\n')
+print('\n Nb inversion obs   :    \n' , nb_inversion("ailgkjmbcefhd")  )
