@@ -20,12 +20,7 @@ def ConvertAsci(L):
     for i in range(len(L)):
         La.append(ord(L[i]))
     return La
-
-#def FinOrdreAlphab(L):
-#    """ Trouve la position de la première lettre qui n'est plus consécutive dans l'ordre alphabétique"""
-#    La = ConvertAsci(L) # convertit la liste de caractère en liste de code ascii corespondant
-#    
-        
+       
 
 def Adjacent(L ):
     """ trouver les couples lettres de la liste de caractères convertis en code ascii L qui sont consécutives dans l'ordre alphabétique"""
@@ -73,7 +68,6 @@ def nb_inversion(l):
 	l_nb_inv = [] # Liste du nombre d'inversion nécessaire par "branche"
 	d = 0
 	P  = permutation(l_ascii , s , d ) # Stack 
-	print("Permutation initile : ", P)
 	nb_inv = 0
 
 	while len(P) != 0 : # Tant que la pile n'est pas vide 
@@ -87,13 +81,17 @@ def nb_inversion(l):
 			p = permutation(l_ascii , s , d) # permutation du premier elmt
 			P= P[1:] # Retire la permutation en cours de traitement 
 			P = p+ P # Ajoute les résultats de "permutation" en tête de liste
-		
+			
 		else : # On a finis de trier une "branche"
 			l_nb_inv.append(P[0][2]) # On ajoute à la liste des résultats le nombre de permutation nécessaire pour obtenir un succes
 			P= P[1:] # On enlève la permutation ayant conduit au succès
 			#nb_inv = 0 # Et on réinitialise le score
-		
-	return min(l_nb_inv)
+	
+	if len(l_nb_inv) > 0 :
+		min_nb_inv = min(l_nb_inv)
+	else : # Aucune inversion n'a été nécessaire
+		min_nb_inv = 0
+	return min_nb_inv 
 
 
 
@@ -155,16 +153,29 @@ def scenario_aleatoire(l,runs):
 	et un nombre de simulations (runs). Cette fonction calcule le nombre d'inversions nécessaires
 	pour trier une séquence aléatoire et retournera une liste contenant le nombre d'inversion minimal qui 
 	a été nécessaire pour résoudre chaque simulation (séquence aléatoire), ainsi que le nombre d'inversion moyen. """
-
 	res =[]
 	for i in range(runs):
-		print('i : ', i)
+		print("\n  \n i  :  ", i)
 		L = seq_aleatoire(l)
 		c_res = nb_inversion(L)
 		res.append(c_res)
 	moy_dist= sum(res)/len(res)
 	return res, moy_dist
 
+def stat_parente(v_alea, d_obs):
+	"""Cette fonction retourne la probabilité d'observer une distance moyenne équivalente à d_obs sous l'hypothèse du hasard.
+	Elle prend en argument le nombre minimal d'inversions néecessaires pour ordonner la séquence de gène (d_obs), et une liste de 
+	taille |l| qui contient le nombre minimal d'inversions néecessaires pour ordonner |l| séquences aléatoires de  taille équivalente
+	à la séquence d'intérêt. """
+	e = 0
+	for res_alea in v_alea:
+		if res_alea < d_obs:
+			e += 1
+	prob = e/len(v_alea)
+	return prob
+
+# ---------- TESTS DES FONCTIONS ---------- #
+"""		
 print("\n MOT 1  ")
 mot1 = "bcaed" 
 L1 = ConvertAsci(mot1)
@@ -225,3 +236,20 @@ P5 = permutation(L5, Score(L5),0)
 print("P5", P5)
 print('\n')
 print('\n Nb inversion obs   :    \n' , nb_inversion("ailgkjmbcefhd")  )
+"""
+
+print("\n  CHROMOSOME A 6 GENES  \n")
+g6 = "bcadfe"
+L6 = ConvertAsci(g6)
+print("\n Distance moyenne d'inversions calculée sur 50 scenari : d_moy=", scenario_aleatoire(L6,50)[1] )
+
+
+print("\n  CHROMOSOME A 7 GENES  \n")
+g7 = "bcadfeg"
+L7 = ConvertAsci(g7)
+print("\n Distance moyenne d'inversions calculée sur 50 scenari : d_moy=", scenario_aleatoire(L7,50)[1] )
+
+print("\n  CHROMOSOME A 13 GENES  \n")
+g13 = "abcdefghijklm"
+L13 = ConvertAsci(g13)
+print("\n Distance moyenne d'inversions calculée sur 20 scenari : d_moy=", scenario_aleatoire(L13,20)[1] )
