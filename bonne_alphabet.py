@@ -46,7 +46,8 @@ def Score(L):
 def end_ord(l) :
 	"""prend en argument une liste de codes ASCII et renvoie l'indice de la première lettre qui n'est plus dans l'ordre alphabetique"""
 	ind=0
-	while l[ind+1]==l[ind]+1:
+
+	while l[ind+1]==l[ind]+1 & ind<len(l):
 		if ind < len(l):
 			ind+=1
 	if ind ==0 : # La première lettre est mal placée
