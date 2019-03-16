@@ -39,7 +39,6 @@ def Score(L):
     if L.index(min(L))==0:
         score+=1
     if L.index(max(L))==len(L)-1:
-    	
         score+=1
     return score
 
@@ -91,6 +90,7 @@ def nb_inversion(l):
 		min_nb_inv = min(l_nb_inv)
 	else : # Aucune inversion n'a été nécessaire
 		min_nb_inv = 0
+
 	return min_nb_inv 
 
 
@@ -148,17 +148,30 @@ def seq_aleatoire(l_ascii):
 	random.shuffle(l_ascii)
 	return l_ascii
 
-def scenario_aleatoire(l,runs):
+def scenario_aleatoire(l,runs, write, file_name=None):
 	"""Scenario aleatoire prend en argument une liste d'entier correspondant au code ascii d'une séquence
 	et un nombre de simulations (runs). Cette fonction calcule le nombre d'inversions nécessaires
 	pour trier une séquence aléatoire et retournera une liste contenant le nombre d'inversion minimal qui 
+
 	a été nécessaire pour résoudre chaque simulation (séquence aléatoire), ainsi que le nombre d'inversion moyen. """
+	# En tête
+	if write == True :
+		with open(file_name, 'a') as f:
+			f.write("Nb_itertion \t Min_inv \n")
+		f.close()
+
 	res =[]
 	for i in range(runs):
 		print("\n  \n i  :  ", i)
 		L = seq_aleatoire(l)
 		c_res = nb_inversion(L)
 		res.append(c_res)
+
+		if write == True :
+			with open(file_name, 'a') as f:
+  				f.write("%d \t %d \n" %(i, c_res))
+			f.close()
+
 	moy_dist= sum(res)/len(res)
 	return res, moy_dist
 
@@ -241,15 +254,19 @@ print('\n Nb inversion obs   :    \n' , nb_inversion("ailgkjmbcefhd")  )
 print("\n  CHROMOSOME A 6 GENES  \n")
 g6 = "bcadfe"
 L6 = ConvertAsci(g6)
-print("\n Distance moyenne d'inversions calculée sur 50 scenari : d_moy=", scenario_aleatoire(L6,50)[1] )
+print("\n Distance moyenne d'inversions calculée sur 50 scenari : d_moy=", scenario_aleatoire(L6,50, True , "6_genes.txt")[1] )
 
 
 print("\n  CHROMOSOME A 7 GENES  \n")
 g7 = "bcadfeg"
 L7 = ConvertAsci(g7)
-print("\n Distance moyenne d'inversions calculée sur 50 scenari : d_moy=", scenario_aleatoire(L7,50)[1] )
+print("\n Distance moyenne d'inversions calculée sur 50 scenari : d_moy=", scenario_aleatoire(L7,50, False )[1] )
 
 print("\n  CHROMOSOME A 13 GENES  \n")
 g13 = "abcdefghijklm"
-L13 = ConvertAsci(g13)
-print("\n Distance moyenne d'inversions calculée sur 20 scenari : d_moy=", scenario_aleatoire(L13,20)[1] )
+#L13 = ConvertAsci(g13)
+#print("\n Distance moyenne d'inversions calculée sur 20 scenari : d_moy=",  scenario_aleatoire(L13,20, "13_genes.txt" )[1] )
+
+
+
+
