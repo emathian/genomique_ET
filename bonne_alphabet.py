@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from __future__ import division
 import random
@@ -425,6 +425,50 @@ def stat_parente(v_alea, d_obs):
 	prob = e/len(v_alea)
 	return prob
 
+def nb_inversion_p(l): # Louise
+	""" prend en argument une liste de chaine de caractères composées de lettre de l'alphabet retourne
+	 le nobre minimum d'inversions necessaires pour obtenir une liste dans m'ordre alphabetique"""
+	print("Liste initial  :  ", l)
+	if isinstance(l, str):
+		l_ascii= ConvertAsci(l) #converti en liste de code ascii
+	else:
+		l_ascii = l
+
+	s=score(l_ascii) #score initial de la sequence
+	print('Score initial  : ', s)
+	l_nb_inv = [] # Liste du nombre d'inversion nécessaire par "branche"
+	d = 0
+	P  = permutation(l_ascii , s , d ) # Stack 
+	print('permutation initial  :  ', P)
+	nb_inv = 0
+
+	while len(P) != 0 : # Tant que la pile n'est pas vide 
+		nb_inv += 1 # On augmente le compteur pour la "branche" parcourue
+		l_ascii = P[0][0] # On récupère le premier élement de la pile 
+		
+		s = P[0][1] # score du premier elmt de la pile
+		d = P[0][2] # Distance à l'origine du premier éléement de la pile
+		print('Ssquence en cours : ', l_ascii)
+		print('Score en cours : ', s)
+		print('Distance en cours  : ', d)
+
+		if s!= len(l_ascii)+1  : # Si la seqence n'est pas triee
+			
+			p = permutation(l_ascii , s , d) # permutation du premier elmt
+			P= P[1:] # Retire la permutation en cours de traitement 
+			P = p+ P # Ajoute les résultats de "permutation" en tête de liste
+			
+		else : # On a finis de trier une "branche"
+			l_nb_inv.append(P[0][2]) # On ajoute à la liste des résultats le nombre de permutation nécessaire pour obtenir un succes
+			print('Nb inv a la fin d une branche  : ', l_nb_inv[-1] )
+			P= P[1:] # On enlève la permutation ayant conduit au succès
+			#nb_inv = 0 # Et on réinitialise le score
+	
+	if len(l_nb_inv) > 0 :
+		min_nb_inv = min(l_nb_inv)
+	else : # Aucune inversion n'a été nécessaire
+		min_nb_inv = 0
+	return min_nb_inv 
 # ---------- TESTS DES FONCTIONS ---------- #
 """		
 print("\n MOT 1  ")
@@ -489,14 +533,14 @@ print('\n')
 print('\n Nb inversion obs   :    \n' , nb_inversion("ailgkjmbcefhd")  )
 """
 
-
+'''
 print("\n  CHROMOSOME A 6 GENES  \n")
 g6 = "bcadfe"
 L6 = ConvertAsci(g6)
 S6 = score(L6)
 d_obs6 = nb_inversion(L6 )
 print('D obs', d_obs6)
-print("\n Distance moyenne d'inversions calculée sur 50 scenari : d_moy=", scenario_aleatoire(L6,50, True , "6_genes.txt")[1] )
+print("\n Distance moyenne d'inversions calculée sur 50 scenari : d_moy=", scenario_aleatoire(L6,500, True , "6_genes.txt")[1] )
 alea6 = scenario_aleatoire(L6,50, True , "6_genes.txt")[0] 
 stat_aleatoire6 = stat_parente(alea6, d_obs6)
 print("Stat 6 ", stat_aleatoire6 )
@@ -508,7 +552,7 @@ S7 = score(L7)
 d_obs7 = nb_inversion(L7)
 print('D obs', d_obs7)
 print("\n Distance moyenne d'inversions calculée sur 50 scenari : d_moy=", scenario_aleatoire(L7,50, False )[1] )
-alea7 = scenario_aleatoire(L7,50, True , "6_genes.txt")[0] 
+alea7 = scenario_aleatoire(L7,500, True , "6_genes.txt")[0] 
 stat_aleatoire7 = stat_parente(alea7, d_obs7)
 print("Stat 6 ", stat_aleatoire7 )
 
@@ -524,7 +568,56 @@ data13 = pd.read_csv('13_genes.txt', header = None, sep='\t')
 res13 = list(data13.iloc[:,1])
 stat_aleatoire13 = stat_parente(res13, d_obs13)
 print("Stat 13 ", stat_aleatoire7 )
+'''
 
+print("\n  DROSOPHILES  : <3  \n")
+chrIIIR= "aebcfdg"
+print("Organisation du chromosome III (r) : ", chrIIIR)
+LIIIR = ConvertAsci(chrIIIR)
+d_obs_IIIR = nb_inversion_p(LIIIR)
+print('Pour le Chr III R  la distance moyenne est  : ', d_obs_IIIR)
+alea_IIIR = scenario_aleatoire(LIIIR,500, False)[0] 
+stat_aleatoire_IIIR = stat_parente(alea_IIIR, d_obs_IIIR)
+print("Probabilite qu'une telle distance soit due au hasard :  ", stat_aleatoire_IIIR , "(sur %s sequence aleatoires) \n"%len(alea_IIIR ))
 
+"""
+chrIIIL= "CFEBAD"
+print("Organisation du chromosome III (l) : ", chrIIIL)
+LIIIL = ConvertAsci(chrIIIL)
+d_obs_IIIL = nb_inversion(LIIIL)
+print('Pour le Chr III R  la distance moyenne est  : ', d_obs_IIIL)
+alea_IIIL = scenario_aleatoire(LIIIL,500, False)[0] 
+stat_aleatoire_IIIL = stat_parente(alea_IIIL, d_obs_IIIL)
+print("Probabilite qu'une telle distance soit due au hasard :  ", stat_aleatoire_IIIL , "(sur %s sequence aleatoires) \n"%len(alea_IIIL ))
+
+chrIIR= "ACEBFD"
+print("Organisation du chromosome II (r) : ", chrIIR)
+LIIR = ConvertAsci(chrIIR)
+d_obs_IIR = nb_inversion(LIIR)
+print('Pour le Chr III R  la distance moyenne est  : ', d_obs_IIR)
+alea_IIR = scenario_aleatoire(LIIR,500, False)[0] 
+stat_aleatoire_IIR = stat_parente(alea_IIR, d_obs_IIR)
+print("Probabilite qu'une telle distance soit due au hasard :  ", stat_aleatoire_IIR , "(sur %s sequence aleatoires) \n"%len(alea_IIR ))
+
+chrIIL= "DEFACB"
+print("Organisation du chromosome II (l) : ", chrIIL)
+LIIL = ConvertAsci(chrIIL)
+d_obs_IIL = nb_inversion(LIIL)
+print('Pour le Chr III R  la distance moyenne est  : ', d_obs_IIL)
+alea_IIL = scenario_aleatoire(LIIL,500, False)[0] 
+stat_aleatoire_IIL = stat_parente(alea_IIL, d_obs_IIL)
+print("Probabilite qu'une telle distance soit due au hasard :  ", stat_aleatoire_IIL , "(sur %s sequence aleatoires) \n"%len(alea_IIL ))
+
+chrX= "LHFEBADCKIJGM"
+print("Organisation du chromosome X : ", chrX)
+LX = ConvertAsci(chrX)
+d_obs_X = nb_inversion(LX)
+print('Pour le Chr III R  la distance moyenne est  : ', d_obs_X)
+#alea_X = scenario_aleatoire(LX,500, False)[0] 
+data13 = pd.read_csv('13_genes.txt', header = None, sep='\t')
+res13 = list(data13.iloc[:,1])
+stat_aleatoire_X = stat_parente(res13, d_obs_X)
+print("Probabilite qu'une telle distance soit due au hasard :  ", stat_aleatoire_X , "(sur %s sequence aleatoires) \n"%len(res13 ))
+"""
 
 
