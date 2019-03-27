@@ -5,26 +5,7 @@ s.start <- data$V9
 s.end <- data$V10
 
 # donne un dot plot lisible
-plot(q.start[2], s.start[2], cex=.1, pch=1)
-for (i in 1:length(q.start)){
-  # test des sens de lecture
-  if(q.start[i]>q.end[i]){
-    if(s.start[i]>s.end[i]){
-      segments(q.start[i], s.start[i], q.end[i], s.end[i])    
-    }
-    else{
-      segments(x0=q.start[i], y0=s.end[i], x1=q.end[i], y1=s.start[i])
-    }
-  }
-  else{
-    if(s.start[i]>s.end[i]){
-      segments(x0=q.end[i], y0=s.start[i], x1=q.start[i], y1=s.end[i])    
-    }
-    else{
-      segments(x0=q.end[i], y0=s.end[i], x1=q.start[i], y1=s.start[i])
-    }
-  }  
-}
+
 
 ## Fusion des segments proches
 data_fusion=data
