@@ -35,15 +35,36 @@ q.end=data_ordre$V8
 plot(q.start[2], s.start[2], cex=.1, pch=1)
 segments(q.start, s.start, q.end, s.end)
 
+################################################################################################
+
+# FILTRER LA DOT MATRIX (SANS LES SEGMENTS FUSIONES)
+data_filtre=ddata_filtre=data_ordre[FALSE,]
+n=length(q.start)
+plot(q.start[2], s.start[2], cex=.1, pch=1)
+for(i in 1:n){
+  # valeur seuil arbitraire...
+  if(abs(q.start[i]-q.end[i])>10000 & abs(s.start[i]-s.end[i])>10000){
+    segments(q.start[i], s.start[i], q.end[i], s.end[i]) 
+    data_filtre <- rbind.data.frame(data_filtre, as.data.frame(data_ordre[i,]))
+  }
+}
+
+s.start=data_filtre$V9
+s.end=data_filtre$V10
+q.start=data_filtre$V7
+q.end=data_filtre$V8
+
+
 ##############################################################################################    
 
 # FUSIONER LES SEGMENTS TRES PROCHES (APRES AVOIR REMIS LES COL. START ET END DANS L'ORDRE)
-data_fusion=data_ordre
+data_fusion=data_filtre
 n=length(q.start)
 for(i in 1:n){
   for(j in 1:n){
     if(q.start[j]>q.start[i]){
-      if(abs(s.start[j]-s.end[i]) < 100 & q.start[j]-q.end[i] < 1000){ # seuil arbitraire inferieur au 1er quartile de abs(s.start-s.end)
+      #if(abs(s.start[j]-s.end[i]) < 533 & q.start[j]-q.end[i] < 3000){ # seuil arbitraire inferieur au 1er quartile de abs(s.start-s.end)
+      if(abs(s.start[j]-s.end[i]) < 533){
         # alors on fusionne les fragments i et j (qui deviennent un unique fragment i)
         data_fusion$V8[i]=data_fusion$V8[j] # q.end
         data_fusion$V10[i]=data_fusion$V10[j] #s.end
