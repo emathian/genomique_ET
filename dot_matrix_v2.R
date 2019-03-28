@@ -1,4 +1,4 @@
-data <- read.table("pestis_1348_co92_Alignment_hit_table.txt")
+data <- read.table("8EZZSG6F11N-Alignment.txt")
 q.start <- data$V7
 q.end <- data$V8
 s.start <- data$V9
