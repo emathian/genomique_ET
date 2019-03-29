@@ -32,15 +32,16 @@ q.end=data_ordre$V8
 ###############################################################################################
 
 # DOT MATRIX (SANS LES SEGMENTS FUSIONES)
-plot(q.start[2], s.start[2], cex=.1, pch=1)
+plot(q.start[25], s.start[25], cex=.1, pch=1, xlim =c(2000000, 5000000), ylim = c(2000000, 5000000))
 segments(q.start, s.start, q.end, s.end)
+
 
 ################################################################################################
 
 # FILTRER LA DOT MATRIX (SANS LES SEGMENTS FUSIONES)
-data_filtre=ddata_filtre=data_ordre[FALSE,]
+data_filtre=data_ordre[FALSE,]
 n=length(q.start)
-plot(q.start[2], s.start[2], cex=.1, pch=1)
+plot(q.start[25], s.start[25], cex=.1, pch=1, xlim =c(2000000, 5000000), ylim = c(2000000, 5000000))
 for(i in 1:n){
   # valeur seuil arbitraire...
   if(abs(q.start[i]-q.end[i])>10000 & abs(s.start[i]-s.end[i])>10000){
@@ -58,13 +59,14 @@ q.end=data_filtre$V8
 ##############################################################################################    
 
 # FUSIONER LES SEGMENTS TRES PROCHES (APRES AVOIR REMIS LES COL. START ET END DANS L'ORDRE)
-data_fusion=data_filtre
+#data_fusion=data_filtre
+data_fusion=data_ordre
 n=length(q.start)
 for(i in 1:n){
   for(j in 1:n){
     if(q.start[j]>q.start[i]){
-      #if(abs(s.start[j]-s.end[i]) < 533 & q.start[j]-q.end[i] < 3000){ # seuil arbitraire inferieur au 1er quartile de abs(s.start-s.end)
-      if(abs(s.start[j]-s.end[i]) < 533){
+      if(abs(s.start[j]-s.end[i]) < 533 & q.start[j]-q.end[i] < 3000){ # seuil arbitraire inferieur au 1er quartile de abs(s.start-s.end)
+       #if(abs(s.start[j]-s.end[i]) < 533){
         # alors on fusionne les fragments i et j (qui deviennent un unique fragment i)
         data_fusion$V8[i]=data_fusion$V8[j] # q.end
         data_fusion$V10[i]=data_fusion$V10[j] #s.end
@@ -87,16 +89,16 @@ s.end_f <- data_fusion$V10
 ###################################################################################################
 
 # DOT MATRIX AVEC LES SEGMENTS FUSIONES
-plot(q.start[2], s.start[2], cex=.1, pch=1)
+plot(q.start[25], s.start[25], cex=.1, pch=1, xlim =c(2000000, 5000000), ylim = c(2000000, 5000000))
 segments(q.start_f, s.start_f, q.end_f, s.end_f)
 
 ######################################################################################################
 
 # FILTRER LA DOT MATRIX
-plot(q.start[2], s.start[2], cex=.1, pch=1)
+plot(q.start[25], s.start[25], cex=.1, pch=1, xlim =c(2000000, 5000000), ylim = c(2000000, 5000000))
 for(i in 1:length(q.start_f)){
   # valeur seuil arbitraire...
-  if(abs(q.start_f[i]-q.end_f[i])>60000){
+  if(abs(q.start_f[i]-q.end_f[i])>10000){
     segments(q.start_f[i], s.start_f[i], q.end_f[i], s.end_f[i])    
   }
 }
