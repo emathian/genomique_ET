@@ -1,4 +1,4 @@
-data <- read.table("8EZZSG6F11N-Alignment.txt")
+data <- read.csv("8F0EB0CW11N-Alignment-HitTable.csv", header=FALSE)
 q.start <- data$V7
 q.end <- data$V8
 s.start <- data$V9
@@ -44,7 +44,7 @@ n=length(q.start)
 plot(q.start[25], s.start[25], cex=.1, pch=1, xlim =c(2000000, 5000000), ylim = c(2000000, 5000000))
 for(i in 1:n){
   # valeur seuil arbitraire...
-  if(abs(q.start[i]-q.end[i])>10000 & abs(s.start[i]-s.end[i])>10000){
+  if(abs(q.start[i]-q.end[i])>1000 | abs(s.start[i]-s.end[i])>1000){
     segments(q.start[i], s.start[i], q.end[i], s.end[i]) 
     data_filtre <- rbind.data.frame(data_filtre, as.data.frame(data_ordre[i,]))
   }
@@ -59,14 +59,14 @@ q.end=data_filtre$V8
 ##############################################################################################    
 
 # FUSIONER LES SEGMENTS TRES PROCHES (APRES AVOIR REMIS LES COL. START ET END DANS L'ORDRE)
-#data_fusion=data_filtre
-data_fusion=data_ordre
+data_fusion=data_filtre
+#data_fusion=data_ordre
 n=length(q.start)
 for(i in 1:n){
   for(j in 1:n){
     if(q.start[j]>q.start[i]){
-      if(abs(s.start[j]-s.end[i]) < 533 & q.start[j]-q.end[i] < 3000){ # seuil arbitraire inferieur au 1er quartile de abs(s.start-s.end)
-       #if(abs(s.start[j]-s.end[i]) < 533){
+      #if(abs(s.start[j]-s.end[i]) < 1000 & q.start[j]-q.end[i] < 1000){ # seuil arbitraire inferieur au 1er quartile de abs(s.start-s.end)
+      if((abs(s.start[j]-s.end[i]) < 10 & abs(q.start[j]-q.end[i]) < 1000) | (abs(s.start[j]-s.end[i]) < 1000 & abs(q.start[j]-q.end[i]) < 10)){ # seuil arbitraire inferieur au 1er quartile de abs(s.start-s.end)
         # alors on fusionne les fragments i et j (qui deviennent un unique fragment i)
         data_fusion$V8[i]=data_fusion$V8[j] # q.end
         data_fusion$V10[i]=data_fusion$V10[j] #s.end
@@ -94,12 +94,15 @@ segments(q.start_f, s.start_f, q.end_f, s.end_f)
 
 ######################################################################################################
 
-# FILTRER LA DOT MATRIX
+# FILTRER FINAL DE LA DOT MATRIX
+data_filtre_fin=data_fusion[FALSE,]
 plot(q.start[25], s.start[25], cex=.1, pch=1, xlim =c(2000000, 5000000), ylim = c(2000000, 5000000))
-for(i in 1:length(q.start_f)){
+n=length(q.start_f)
+for(i in 1:n){
   # valeur seuil arbitraire...
-  if(abs(q.start_f[i]-q.end_f[i])>10000){
-    segments(q.start_f[i], s.start_f[i], q.end_f[i], s.end_f[i])    
+  if(abs(q.start_f[i]-q.end_f[i])>10000 | abs(s.start_f[i]-s.end_f[i])>10000){
+    segments(q.start_f[i], s.start_f[i], q.end_f[i], s.end_f[i])
+    data_filtre_fin <- rbind.data.frame(data_filtre_fin, as.data.frame(data_fusion[i,]))
   }
 }
 
