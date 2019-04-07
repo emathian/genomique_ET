@@ -70,7 +70,7 @@ for(i in 1:n){
         # alors on fusionne les fragments i et j (qui deviennent un unique fragment i)
         data_fusion$V8[i]=data_fusion$V8[j] # q.end
         data_fusion$V10[i]=data_fusion$V10[j] #s.end
-        data_fusion$V7[j]="FALSE" # q.start >> empêche la ligne j d'être considérée dans les boucles suivantes 
+        data_fusion$V7[j]="FALSE" # q.start >> emp??che la ligne j d'??tre consid??r??e dans les boucles suivantes 
       }
     }
   }
@@ -103,3 +103,6 @@ for(i in 1:length(q.start_f)){
   }
 }
 
+
+data <- data.frame(ID = seq(1:length(q.start_f)),Qstart = q.start_f , Qend = q.end_f , Sstart = s.start_f , Send = s.end_f)
+write.table(data, file = "data.txt", quote = FALSE, sep = "\t", col.names = TRUE)
