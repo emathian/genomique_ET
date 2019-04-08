@@ -1,4 +1,4 @@
-mon_fichier=open("1348_chromosome.txt",'r')
+mon_fichier=open("Yernisia_pestis.txt",'r')
 sequence=mon_fichier.read()
 taille=0
 nbN=0
@@ -16,3 +16,5 @@ print(taille, nbN)
 mon_fichier.close()
 
 # 1348_chromosome.txt : taille génome = 3533579 ; nb sites non def = 25769
+
+# Yernisia_pestis.txt (NC_003143.1 Yersinia pestis CO92) : taille génome = 3551058 ; nb sites non def = 0
