@@ -3,30 +3,7 @@ q.start <- data$V7
 q.end <- data$V8
 s.start <- data$V9
 s.end <- data$V10
-###########################################################################################
 
-# REMETRE LES COLONNES END ET START DANS L'ORDRE
-data_ordre=data
-n=length(q.start)
-for(i in 1:n){
-  # test des sens de lecture
-  if(s.start[i]>s.end[i]){
-    # s.start est la fin et s.end est le debut
-    # on les echange
-    data_ordre$V9[i]=s.end[i] #v9=s.start, v10=s.end
-    data_ordre$V10[i]=s.start[i]
-  }
-  if(q.start[i]>q.end[i]){
-    # q.start est la fin et q.end est le debut
-    # on les echange
-    data_ordre$V7[i]=q.end[i] #v7=q.start, v8=q.end
-    data_ordre$V8[i]=q.start[i]
-  }
-}
-s.start=data_ordre$V9
-s.end=data_ordre$V10
-q.start=data_ordre$V7
-q.end=data_ordre$V8
 ###############################################################################################
 
 # DOT MATRIX (SANS LES SEGMENTS FUSIONES)
@@ -62,18 +39,20 @@ for(i in 1:n){
   for(j in 1:n){
     if(i!=j & data_fusion$V7[j]!=-1){
       #if(q.start[j]>q.start[i]){
-        #if(abs(s.start[j]-s.end[i]) < 10000 & q.start[j]-q.end[i] < 10000){ # seuil arbitraire inferieur au 1er quartile de abs(s.start-s.end)
-        if(((abs(s.start[j]-s.end[i]) < 5000 & abs(q.start[j]-q.end[i]) < 100000)) | (abs(s.start[j]-s.end[i]) < 100000 & abs(q.start[j]-q.end[i]) < 5000)){ # seuil arbitraire inferieur au 1er quartile de abs(s.start-s.end)
-          if(((s.end[j]-s.start[i])/(q.end[j]-q.start[i])-0.001) < (s.end[i]-s.start[i])/(q.end[i]-q.start[i]) & (s.end[i]-s.start[i])/(q.end[i]-q.start[i]) < ((s.end[j]-s.start[i])/(q.end[j]-q.start[i])+0.001)){
-            # alors on fusionne les fragments i et j (qui deviennent un unique fragment i)
-            data_fusion$V8[i]=data_fusion$V8[j] # q.end
-            data_fusion$V10[i]=data_fusion$V10[j] #s.end
-            data_fusion$V7[j]=-1 # q.start >> emp??che la ligne j d'??tre consid??r??e dans les boucles suivantes 
-          }
+
+      #if(abs(s.start[j]-s.end[i]) < 10000 & q.start[j]-q.end[i] < 10000){ # seuil arbitraire inferieur au 1er quartile de abs(s.start-s.end)
+      if(((abs(s.start[j]-s.end[i]) < 5000 & abs(q.start[j]-q.end[i]) < 100000)) | (abs(s.start[j]-s.end[i]) < 100000 & abs(q.start[j]-q.end[i]) < 5000)){ # seuil arbitraire inferieur au 1er quartile de abs(s.start-s.end)
+        if(((s.end[j]-s.start[i])/(q.end[j]-q.start[i])-0.001) < (s.end[i]-s.start[i])/(q.end[i]-q.start[i]) & (s.end[i]-s.start[i])/(q.end[i]-q.start[i]) < ((s.end[j]-s.start[i])/(q.end[j]-q.start[i])+0.001)){
+          # alors on fusionne les fragments i et j (qui deviennent un unique fragment i)
+          data_fusion$V8[i]=data_fusion$V8[j] # q.end
+          data_fusion$V10[i]=data_fusion$V10[j] #s.end
+          data_fusion$V7[j]=-1 # q.start >> empêche la ligne j d'être considérée dans les boucles suivantes 
+
         }
       }
     }
   }
+}
 
 
 ##################################################################################################
@@ -164,4 +143,30 @@ taux_garde = simi_garde/max(s.end) # on divise par la taille du g??nome s
 # CHEZ LA TOTALITE DES ALIGNEMENTS 
 long_segments_tot = sqrt((q.end- q.start)^2 + (s.end- s.start)^2 ) # longeur des segments de la dot_matrix
 simi_tot = sum(long_segments_tot)/length(q.start) # on divise par le nombre de segments
-taux_tot = simi_tot/max(s.end) # on divise par la taille du g??nome s
+taux_tot = simi_tot/max(s.end) # on divise par la taille du génome s
+
+
+###########################################################################
+# EXPORTATION DES DONNEES
+
+q.start_f <-data_filtre_fin$V7
+q.end_f <- data_filtre_fin$V8
+s.start_f <- data_filtre_fin$V9
+s.end_f <- data_filtre_fin$V10
+
+
+data = data.frame(Qstart = q.start_f , Qend = q.end_f,Sstart = s.start_f , Send = s.end_f)
+data = data[order(data$Qstart),]
+data["ID"]=  seq(1:length(q.start_f))
+data
+
+data_orga_ref = data.frame(Qstart = data$Qstart , Qend = data$Qend , ID=data$ID)
+
+data_orga_interest = data.frame(Sstart = data$Sstart , Send =data$Send , ID=data$ID)
+data_orga_interest = data_orga_interest[order(data_orga_interest$Sstart),]
+data_orga_interest
+
+
+write.table(data_orga_ref, "data_orga_ref.txt", append = FALSE, sep = "\t", dec = ".", quote=FALSE,col.names = TRUE, row.names = FALSE)
+write.table(data_orga_interest, "data_orga_interest.txt", append = FALSE, sep = "\t", dec = ".", quote=FALSE,col.names = TRUE, row.names = FALSE)
+
