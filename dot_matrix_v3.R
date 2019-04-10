@@ -30,7 +30,7 @@ q.end=data_ordre$V8
 ###############################################################################################
 
 # DOT MATRIX (SANS LES SEGMENTS FUSIONES)
-plot(q.start[25], s.start[25], cex=.1, pch=1, xlim =c(0, 5000000), ylim = c(0, 5000000), xlab = "Génome 1", ylab = "Génome 2")
+plot(q.start[25], s.start[25], cex=.1, pch=1, xlim =c(0, 5000000), ylim = c(0, 5000000), xlab = "G??nome 1", ylab = "G??nome 2")
 segments(q.start, s.start, q.end, s.end)
 
 ################################################################################################
@@ -68,7 +68,7 @@ for(i in 1:n){
             # alors on fusionne les fragments i et j (qui deviennent un unique fragment i)
             data_fusion$V8[i]=data_fusion$V8[j] # q.end
             data_fusion$V10[i]=data_fusion$V10[j] #s.end
-            data_fusion$V7[j]=-1 # q.start >> empêche la ligne j d'être considérée dans les boucles suivantes 
+            data_fusion$V7[j]=-1 # q.start >> emp??che la ligne j d'??tre consid??r??e dans les boucles suivantes 
           }
         }
       }
@@ -109,7 +109,7 @@ for(k in 1:8){
             # alors on fusionne les fragments i et j (qui deviennent un unique fragment i)
             data_fusion2$V8[i]=data_fusion2$V8[j] # q.end
             data_fusion2$V10[i]=data_fusion2$V10[j] #s.end
-            data_fusion2$V7[j]=-1 # q.start >> empêche la ligne j d'être considérée dans les boucles suivantes 
+            data_fusion2$V7[j]=-1 # q.start >> emp??che la ligne j d'??tre consid??r??e dans les boucles suivantes 
           }
         }
       }
@@ -129,7 +129,7 @@ for(k in 1:8){
 ###################################################################################################
 
 # DOT MATRIX AVEC LES SEGMENTS FUSIONES
-plot(q.start[25], s.start[25], cex=.1, pch=1, xlim =c(0, 5000000), ylim = c(0, 5000000), xlab = "Génome 1", ylab = "Génome 2")
+plot(q.start[25], s.start[25], cex=.1, pch=1, xlim =c(0, 5000000), ylim = c(0, 5000000), xlab = "G??nome 1", ylab = "G??nome 2")
 segments(q.start_f, s.start_f, q.end_f, s.end_f)
 
 
@@ -137,7 +137,7 @@ segments(q.start_f, s.start_f, q.end_f, s.end_f)
 
 # FILTRAGE FINAL DE LA DOT MATRIX
 data_filtre_fin=data_fusion[FALSE,]
-plot(q.start[25], s.start[25], cex=.1, pch=1, xlim =c(0, 5000000), ylim = c(0, 5000000), xlab = "Génome 1", ylab = "Génome 2")
+plot(q.start[25], s.start[25], cex=.1, pch=1, xlim =c(0, 5000000), ylim = c(0, 5000000), xlab = "G??nome 1", ylab = "G??nome 2")
 n=length(q.start_f)
 for(i in 1:n){
   # valeur seuil arbitraire...
@@ -159,9 +159,9 @@ q.end=data_ordre$V8
 # CHEZ LES ALIGNEMENTS GARDES
 long_segments_f = sqrt((q.end_f- q.start_f)^2 + (s.end_f- s.start_f)^2 ) # longeur des segments de la dot_matrix
 simi_garde = sum(long_segments_f)/length(q.start_f) # on divise par le nombre de segments
-taux_garde = simi_garde/max(s.end) # on divise par la taille du génome s
+taux_garde = simi_garde/max(s.end) # on divise par la taille du g??nome s
 
 # CHEZ LA TOTALITE DES ALIGNEMENTS 
 long_segments_tot = sqrt((q.end- q.start)^2 + (s.end- s.start)^2 ) # longeur des segments de la dot_matrix
 simi_tot = sum(long_segments_tot)/length(q.start) # on divise par le nombre de segments
-taux_tot = simi_tot/max(s.end) # on divise par la taille du génome s
+taux_tot = simi_tot/max(s.end) # on divise par la taille du g??nome s
