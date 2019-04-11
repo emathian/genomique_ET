@@ -1,0 +1,660 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>bonne_alphabet module &#8212; Documentation Nombre d&#39;inversion minimal 0</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" />
+    <link rel="next" title="Contexte historique et biologique :" href="contexte.html" />
+    <link rel="prev" title="Programme" href="modules.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-bonne_alphabet">
+<span id="bonne-alphabet-module"></span><h1>bonne_alphabet module<a class="headerlink" href="#module-bonne_alphabet" title="Lien permanent vers ce titre">¶</a></h1>
+<p>Ce programme a été rédigé pour la recherche du nombre minimal d’inversion à réaliser pour
+ordonner une séquence, attention c’est un problème NP complet. Nous avons donc implémenter une heuristique,
+celle-ci est donc utilisable sur de petites séquences. Ce programme répond à des questions d’organisation des
+chromosomes, dans le but de recherche de liens de parenté.</p>
+<dl class="function">
+<dt id="bonne_alphabet.ConvertAsci">
+<code class="descclassname">bonne_alphabet.</code><code class="descname">ConvertAsci</code><span class="sig-paren">(</span><em>L</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bonne_alphabet.html#ConvertAsci"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bonne_alphabet.ConvertAsci" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Converti les éléments d’une liste de lettres en entiers.</p>
+<p>Cette fonction converti une liste de caractères en une liste d’entier correspondant à leur code ascii.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><strong>L</strong> (<em>list</em>) – <cite>L</cite> est une liste de caractères.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Renvoie:</th><td class="field-body"><strong>La</strong> – <cite>La</cite> est une liste d’entiers correspondant aux codes ascii de la liste <cite>L</cite>.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Type renvoyé:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">L</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span><span class="s2">&quot;b&quot;</span><span class="p">,</span><span class="s2">&quot;c&quot;</span><span class="p">,</span><span class="s2">&quot;e&quot;</span><span class="p">,</span><span class="s2">&quot;j&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ConvertAsci</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+<span class="go">[97, 98, 99, 101, 106]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="bonne_alphabet.adjacent">
+<code class="descclassname">bonne_alphabet.</code><code class="descname">adjacent</code><span class="sig-paren">(</span><em>L</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bonne_alphabet.html#adjacent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bonne_alphabet.adjacent" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Recherche l’ensemble des éléments consécutifs d’une listes d’entiers.</p>
+<p>Cette fonction prend en argument une liste d’entiers et retourne
+une liste de listes contenant tous les couples d’indices dont les
+valeurs dans <cite>L</cite> sont consécutives selon l’ordre numétique. Une liste
+vide est retournée si aucun élément de <cite>L</cite> n’est consécutif.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><strong>L</strong> (<em>list</em>) – <cite>L</cite> est une liste d’entiers.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Renvoie:</th><td class="field-body"><strong>adj</strong> – <cite>adj</cite> est une liste de listes contenant tous les couples d’indice
+de <cite>L</cite> dont les valeurs sont consécutives.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Type renvoyé:</th><td class="field-body">array_like</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">L1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">adjacent</span><span class="p">(</span><span class="n">L1</span><span class="p">)</span>
+<span class="go">[[0, 1], [2, 3]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">L2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">adjacent</span><span class="p">(</span><span class="n">L2</span><span class="p">)</span>
+<span class="go">[[0, 1], [1, 2], [2, 3]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">L3</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">adjacent</span><span class="p">(</span><span class="n">L3</span><span class="p">)</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="bonne_alphabet.end_ord">
+<code class="descclassname">bonne_alphabet.</code><code class="descname">end_ord</code><span class="sig-paren">(</span><em>l</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bonne_alphabet.html#end_ord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bonne_alphabet.end_ord" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Recherche l’indice du premier élément non trié.</p>
+<p>Cette fonction recherche le premier élément d’une liste d’entiers
+qui n’est pas dans l’ordre numérique croissant et retourne son indice. Si la
+valeur retounée est égale à zéro alors les deux premiers éléments
+ne sont pas dans le bonne ordre, la suite des éléments étant possiblement
+triés. Si la valeur retournée est égale à la longueur de la liste,
+alors cele-ci est triée.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><strong>l</strong> (<em>list</em>) – <cite>l</cite> est une liste d’entiers.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Renvoie:</th><td class="field-body"><cite>int</cite> est l’indice du premier élément mal positionné de <cite>l</cite>.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Type renvoyé:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">Voir aussi</p>
+<dl class="last docutils">
+<dt><a class="reference internal" href="#bonne_alphabet.permutation" title="bonne_alphabet.permutation"><code class="xref py py-func docutils literal notranslate"><span class="pre">permutation()</span></code></a></dt>
+<dd>Recherche itérative de toutes les inversions permettant d’améliorer le score.</dd>
+<dt><a class="reference internal" href="#bonne_alphabet.nb_inversion" title="bonne_alphabet.nb_inversion"><code class="xref py py-func docutils literal notranslate"><span class="pre">nb_inversion()</span></code></a></dt>
+<dd>Recherche itérative du nombre minimal d’inversion.</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">L1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">end_ord</span><span class="p">(</span><span class="n">L1</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">L2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">end_ord</span><span class="p">(</span><span class="n">L2</span><span class="p">)</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">L3</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">end_ord</span><span class="p">(</span><span class="n">L3</span><span class="p">)</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="bonne_alphabet.inversion">
+<code class="descclassname">bonne_alphabet.</code><code class="descname">inversion</code><span class="sig-paren">(</span><em>L</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bonne_alphabet.html#inversion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bonne_alphabet.inversion" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Inverse les éléments d’une liste.</p>
+<p>Cette fonction permet de réecrire les éléments de <cite>L</cite> de
+droite à gauche.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><strong>L</strong> (<em>list</em>) – <cite>L</cite> est une liste ou une liste de liste.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Renvoie:</th><td class="field-body"><strong>Lc</strong> – <cite>Lc</cite> est équivalente à liste <cite>L</cite> lue de droite à gauqhe.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Type renvoyé:</th><td class="field-body">array_like</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">L</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inversion</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+<span class="go">[5, 4, 3, 2, 1]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="bonne_alphabet.nb_inversion">
+<code class="descclassname">bonne_alphabet.</code><code class="descname">nb_inversion</code><span class="sig-paren">(</span><em>l</em>, <em>v2=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bonne_alphabet.html#nb_inversion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bonne_alphabet.nb_inversion" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Calcul le nombre d’inversion nécéssaire dans une chaine de caractères composées de lettre de l’alphabet consécutives pour atteindre l’ordre alphabétique.</p>
+<p>Cette fonction calcul le nombre minimum d’inversions necessaires pour obtenir une chaine de caractère odonnée dans une chaine
+de caractères composées de lettre de l’alphabet consécutives. L’utilisateur peut choisir d’appeler une version v2
+de la fonction permutation dans le cas où la chaine de caractère est courte ou si il lance la fonction scenario_aleatoire.
+Par défaut v2=False, pour utiliser v2 donner en paramètre v2=True.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first simple">
+<li><strong>l</strong> (<em>list</em>) – <cite>l</cite> est une chaîne de caractères.</li>
+<li><strong>v2</strong> (<em>bool</em>) – <cite>v2</cite> est un booleen qui vaut False par défaut et entraine l’utilisation de la fonction permutation.
+Si l’utilisateur donne en argument v2=True alors c’est la fonction permutation_v2 qui est appelée.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Renvoie:</th><td class="field-body"><p class="first"><strong>min_nb_inv</strong> – <cite>min_nb_inv</cite> est un entier représentif du nombre d’inversion minimum dans une liste pour atteindre l’ordre alphabétique.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Type renvoyé:</th><td class="field-body"><p class="first last">int</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">Voir aussi</p>
+<dl class="last docutils">
+<dt><a class="reference internal" href="#bonne_alphabet.ConvertAsci" title="bonne_alphabet.ConvertAsci"><code class="xref py py-func docutils literal notranslate"><span class="pre">ConvertAsci()</span></code></a></dt>
+<dd>Converti les elements d’une liste en l_ascii.</dd>
+<dt><a class="reference internal" href="#bonne_alphabet.score" title="bonne_alphabet.score"><code class="xref py py-func docutils literal notranslate"><span class="pre">score()</span></code></a></dt>
+<dd>Calcul un score de ressamblance à l’ordre alphabétique pour une liste de code ascii.</dd>
+<dt><a class="reference internal" href="#bonne_alphabet.permutation" title="bonne_alphabet.permutation"><code class="xref py py-func docutils literal notranslate"><span class="pre">permutation()</span></code></a></dt>
+<dd>Recherche itérative de toutes les inversions permettant d’améliorer le score.</dd>
+<dt><a class="reference internal" href="#bonne_alphabet.permutation_v2" title="bonne_alphabet.permutation_v2"><code class="xref py py-func docutils literal notranslate"><span class="pre">permutation_v2()</span></code></a></dt>
+<dd>Recherche exhaustive des inversions.</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">l1</span> <span class="o">=</span> <span class="s2">&quot;abcdef&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nb_inversion</span><span class="p">(</span><span class="n">l1</span><span class="p">)</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">l2</span> <span class="o">=</span> <span class="s2">&quot;cdab&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nb_inversion</span><span class="p">(</span><span class="n">l2</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">l3</span> <span class="o">=</span> <span class="s2">&quot;aebcfdg&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nb_inversion</span><span class="p">(</span><span class="n">l3</span><span class="p">,</span><span class="n">v2</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nb_inversion</span><span class="p">(</span><span class="n">l3</span><span class="p">)</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nb_inversion</span><span class="p">(</span><span class="n">l2</span><span class="p">,</span><span class="n">v2</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nb_inversion</span><span class="p">(</span><span class="n">l2</span><span class="p">,</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="bonne_alphabet.permutation">
+<code class="descclassname">bonne_alphabet.</code><code class="descname">permutation</code><span class="sig-paren">(</span><em>L</em>, <em>score_courant</em>, <em>dist</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bonne_alphabet.html#permutation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bonne_alphabet.permutation" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Recherche presque exhaustive des inversions dans une liste d’entiers pour l’ordonner.</p>
+<p>Cette fonction prend en argument une liste d’entiers, son <cite>score_courant</cite>
+(cf : <cite>score</cite>), ainsi que sa distance à l’origine (i.e. à la séquence initiale).
+En effet elle est appellée par la procédure <cite>nb_inversion</cite>, qui détermine
+le nombre d’inversions nécessaires pour trier une liste, ce nombre
+d’inversions détermine la distance l’origine d’une possibilité.</p>
+<p>Ainsi étant donné une liste et son état courant, <cite>permutation</cite> commence
+par déterminer la séquence à inverser, si une inversion est nécessaire.
+Pour <cite>i</cite> allant de 0 à la taille de la séquence à inverser -1, <cite>permuatation</cite>
+genère l’inversion de taille <cite>i</cite>, et recalcul le score. Si celui-ci au
+moins égal au <cite>score_courant</cite>, <cite>permutation</cite> retient la liste inversée,
+son score et incrémente sa distance de 1.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first simple">
+<li><strong>L</strong> (<em>list</em>) – <cite>L</cite> est une liste d’entiers.</li>
+<li><strong>score_courant</strong> (<em>int</em>) – Score de la liste (cf : <cite>score</cite>).</li>
+<li><strong>dist</strong> (<em>int</em>) – <cite>dist</cite> est la distance à l’origine pour la séquence <cite>L</cite>, traduit le nombre d’inversions
+qui ont déjà été réalisées sur <cite>L</cite>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Renvoie:</th><td class="field-body"><p class="first"><strong>res</strong> – <cite>res</cite> est une liste contanant autant de tuple que d’inversions
+conservées. Chaque tuple est constitué de la séquence après
+inversion, de son score et de sa distance (<cite>dist</cite> + 1).</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Type renvoyé:</th><td class="field-body"><p class="first last">liste de tuples</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">Voir aussi</p>
+<dl class="last docutils">
+<dt><a class="reference internal" href="#bonne_alphabet.nb_inversion" title="bonne_alphabet.nb_inversion"><code class="xref py py-func docutils literal notranslate"><span class="pre">nb_inversion()</span></code></a></dt>
+<dd>Recherche itérative du nombre minimal d’inversion.</dd>
+<dt><a class="reference internal" href="#bonne_alphabet.permutation_v2" title="bonne_alphabet.permutation_v2"><code class="xref py py-func docutils literal notranslate"><span class="pre">permutation_v2()</span></code></a></dt>
+<dd>Recherche exhaustive des inversions.</dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p>Étant donné que cette fonction fait appel à <cite>nb_inversion</cite>, elle ne peut
+être appliquée que pour des listes de petite taille, afin de garantir
+l’éxécution du calcul dans un temps raisonnable.</p>
+<p><cite>permutation</cite> gère les cas suivants :
+1 : Si <cite>L</cite> est déjà triée alors une liste vide est renvoyée.</p>
+<p>2 : Si et seulement si le début de <cite>L</cite> est trié la séquence à
+inverser correspond aux éléments situés après le dernier
+élément dans le bon ordre.
+Exemple : ABEDC -&gt; Séquence à inverser = EDC</p>
+<p>3 : Si le début de la séquence n’est pas trié alors
+la séquence à inverser correspond à l’ensemble des éléments
+situés avant l’élément minimal.
+Exemple : EDABC -&gt; Séquence à inverser = EDA</p>
+<p>4 : Si les premiers éléments de <cite>L</cite> sont successif mais
+si le premier élément n’est pas bien placé alors la séquence
+à inverser correspond à l’ensemble des éléments situés en
+amont du premier élément.
+Exemple : BCAED -&gt; Séquence à inverser = BCA</p>
+<p>5 :  Si la première lettre est bien placée et si seulement
+la première l’est alors la séquence à inverser correspond
+aux éléments situés après le premier élément et l’élément
+minimal (sans prise en compte du premier).
+Exemple : ACBDFE -&gt; Séquence à inverser = CB</p>
+<p>Attention cette fonction ne permet pas d’obtenir le nombre
+minimal d’inversion dans le cas où la séquence à inverser
+n’est pas contenure entre la séquence déjà triée et la lettre
+minimal.</p>
+<p>Exemple:
+Mot = A E B C F D G
+1   : A B E C F D G
+2   : A B C E F D G
+3   : A B C D F E G
+4   : A B C D E F G</p>
+<p>Dans ce cas très précis le nombre d’inversion minimal est
+trois ainsi la version 2 de permutation doit être utilisée.</p>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">L1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">S1</span> <span class="o">=</span> <span class="n">score</span><span class="p">(</span><span class="n">L1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">permutation</span><span class="p">(</span><span class="n">L1</span><span class="p">,</span><span class="n">S1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Cas n°2</span>
+<span class="go">[([1, 2, 3, 4, 5], 6, 1)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">L2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">S2</span> <span class="o">=</span> <span class="n">score</span><span class="p">(</span><span class="n">L2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">permutation</span><span class="p">(</span><span class="n">L2</span><span class="p">,</span><span class="n">S2</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Cas n°3</span>
+<span class="go">[([1, 4, 5, 2, 3], 3, 1)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">L3</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">S3</span> <span class="o">=</span> <span class="n">score</span><span class="p">(</span><span class="n">L3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">permutation</span><span class="p">(</span><span class="n">L3</span><span class="p">,</span><span class="n">S3</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Cas n°4</span>
+<span class="go">[([1, 3, 2, 5, 4], 3, 1), ([2, 1, 3, 5, 4], 2, 1)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">L4</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">S4</span> <span class="o">=</span> <span class="n">score</span><span class="p">(</span><span class="n">L4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">permutation</span><span class="p">(</span><span class="n">L4</span><span class="p">,</span><span class="n">S4</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Cas n°5</span>
+<span class="go">[([1, 2, 3, 4, 6, 5], 5, 1)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="bonne_alphabet.permutation_v2">
+<code class="descclassname">bonne_alphabet.</code><code class="descname">permutation_v2</code><span class="sig-paren">(</span><em>L</em>, <em>score_courant</em>, <em>dist</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bonne_alphabet.html#permutation_v2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bonne_alphabet.permutation_v2" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Recherche exhaustive des inversions pour l’ordonner.</p>
+<p>Cette fonction prend en argument une liste d’entiers, son <cite>score_courant</cite>
+(cf : <cite>score</cite>), ainsi que sa distance à l’origine (à la séquence initiale).
+En effet elle est appellée par la procédure <cite>nb_inversion</cite>, qui détermine
+le nombre d’inversions nécessaires pour trier une liste, ce nombre
+d’inversions détermine la distance l’origine d’une possibilité.
+Cette fonction est donc semblable à <cite>permutation</cite>. Cette version permet
+toutefois une recherche exhaustive de toutes les permutations. Le nombre
+de combinaison pouvant être relativement grand, cette fonction n’est adaptée
+que pour des séquences de taille inférieurs 8.</p>
+<p>Ainsi étant donné une liste et son état courant, <cite>permutation_v2</cite> recherhe
+la partie de la séquence qui  a déjà été ordonnée, puis génère toute les
+inversion possible. Une inversion sera retenue si et seulement si elle permet
+de conserver ou d’augmenter le score.</p>
+<p>La fonction <cite>permutation_v2</cite> retourne ainsi la liste de toute les inversions.
+À chaque élément de la liste des résultats est associé la séquence d’entiers,
+le score associé à cette séquence et la distance à l’origine. En effet la
+distance de chaque séquences retenue est incrémentée d’une unité, étant
+donné qu’elles sont la résultante d’une inversion.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first simple">
+<li><strong>L</strong> (<em>list</em>) – <cite>L</cite> est une liste d’entiers.</li>
+<li><strong>score_courant</strong> (<em>int</em>) – Score de la liste (cf : <cite>score</cite>).</li>
+<li><strong>dist</strong> (<em>int</em>) – Distance à l’origine pour la séquence <cite>L</cite>, traduit le nombre d’inversions
+qui ont déjà été réalisées sur <cite>L</cite>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Renvoie:</th><td class="field-body"><p class="first"><strong>res</strong> – <cite>res</cite> est une liste contanant autant de tuple que d’inversions
+conservées. Chaque tuple est constitué de la séquence après
+inversion, de son score et de sa distance (<cite>dist</cite> + 1).</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Type renvoyé:</th><td class="field-body"><p class="first last">liste de tuples</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">Voir aussi</p>
+<dl class="last docutils">
+<dt><a class="reference internal" href="#bonne_alphabet.nb_inversion" title="bonne_alphabet.nb_inversion"><code class="xref py py-func docutils literal notranslate"><span class="pre">nb_inversion()</span></code></a></dt>
+<dd>Recherche itérative du nombre minimal d’inversion</dd>
+<dt><a class="reference internal" href="#bonne_alphabet.permutation" title="bonne_alphabet.permutation"><code class="xref py py-func docutils literal notranslate"><span class="pre">permutation()</span></code></a></dt>
+<dd>Recherche exhaustive des inversions</dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p>Étant donné que cette fonction fait appel à <cite>nb_inversion</cite>, elle ne peut
+être appliquée que pour des listes de petite taille, afin de garantir
+l’éxécution du calcul dans un temps raisonnable. Ceci est particulièrement
+pour cette deuxième version de <cite>permutation_v2</cite>.</p>
+<p>Etant donné une séquence <cite>L</cite> <cite>permutation_v2</cite>, recherche la partie déjà
+triée, de taille N. Pour la séquence à trier elle génere toutes les permutation
+possibles. Pour ce faire elle commence donc à itérer à partir de la première
+lettre non triée d’indice N+1 , et génère toutes les permutations pour cette
+position. Puis elle recommence pour la deuxième lettre non triée etc…
+Les inversions testées peuvent être résumées  telles que :
+.. math:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">perm</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">N</span><span class="o">+</span><span class="n">j</span><span class="p">)</span> <span class="o">=</span> \<span class="n">sum_</span><span class="p">{</span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">}</span><span class="o">^</span><span class="p">{</span><span class="n">i</span><span class="o">=</span><span class="n">L</span><span class="o">-</span><span class="p">(</span><span class="n">N</span><span class="o">+</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)}</span> <span class="n">inv</span><span class="p">(</span><span class="n">L</span><span class="p">[</span><span class="n">N</span><span class="o">+</span><span class="n">j</span> <span class="p">:</span> <span class="n">N</span><span class="o">+</span><span class="n">j</span><span class="o">+</span><span class="n">i</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Dans cette formule i correspond à la i ème permutation, et N+j
+à la position de lettre non triée considérée. À chaque itération les éléments
+d’indice compris entre (N+j) et  et (N+j+i) sont inversés</p>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">L1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">S1</span> <span class="o">=</span> <span class="n">score</span><span class="p">(</span><span class="n">L1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">permutation</span><span class="p">(</span><span class="n">L1</span><span class="p">,</span><span class="n">S1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Cas n°2</span>
+<span class="go">[([1, 2, 3, 4, 5], 6, 1)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">L2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">S2</span> <span class="o">=</span> <span class="n">score</span><span class="p">(</span><span class="n">L2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">permutation</span><span class="p">(</span><span class="n">L2</span><span class="p">,</span><span class="n">S2</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Cas n°3</span>
+<span class="go">[([1, 4, 5, 2, 3], 3, 1)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">L3</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">S3</span> <span class="o">=</span> <span class="n">score</span><span class="p">(</span><span class="n">L3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">permutation</span><span class="p">(</span><span class="n">L3</span><span class="p">,</span><span class="n">S3</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Cas n°4</span>
+<span class="go">[([1, 3, 2, 5, 4], 3, 1), ([2, 1, 3, 5, 4], 2, 1)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">L4</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">S4</span> <span class="o">=</span> <span class="n">score</span><span class="p">(</span><span class="n">L4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">permutation</span><span class="p">(</span><span class="n">L4</span><span class="p">,</span><span class="n">S4</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Cas n°5</span>
+<span class="go">[([1, 2, 3, 4, 6, 5], 5, 1)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="bonne_alphabet.scenario_aleatoire">
+<code class="descclassname">bonne_alphabet.</code><code class="descname">scenario_aleatoire</code><span class="sig-paren">(</span><em>l</em>, <em>n</em>, <em>write</em>, <em>file_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bonne_alphabet.html#scenario_aleatoire"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bonne_alphabet.scenario_aleatoire" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Recherche du nombre d’inversions minimal dans une liste aléatoires d’entiers consecutifs.</p>
+<p>Cette fonction prend en argument une liste d’entiers, elle la mélange
+puis calcul le nombre d’inversions minimal nécessaire la trier. Ce
+processus est répété <cite>n</cite> fois. En sortie cette fonction retourne une
+liste de taille <cite>n</cite> contenant le nombre d’inversions minimal trouvé
+pour chaque test, ainsi que le nombre moyen d’inversions obtenu pour
+une liste de taille <cite>l</cite>. L’utilisateur peut choisir d’enregistrer les
+résultats dans un fichier texte pour cela il doit préciser le non du
+fichier.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first simple">
+<li><strong>l</strong> (<em>list</em>) – <cite>l</cite> est une liste d’entiers.</li>
+<li><strong>n</strong> (<em>int</em>) – <cite>n</cite> nombre d’itérations à effectuer.</li>
+<li><strong>write</strong> (<em>bool</em>) – <cite>write</cite> est un booléen si la fonction écrit ou non les résultats dans un fichier.</li>
+<li><strong>file_name</strong> – <cite>file_name</cite> est le nom du fichier qui contiendra les résultat si write = True.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Renvoie:</th><td class="field-body"><p class="first"><strong>res</strong> – <cite>res</cite> est une liste contenant le nombre minimal d’inversion obtenu pour les <cite>n</cite>
+répétitions.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Type renvoyé:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">Voir aussi</p>
+<dl class="last docutils">
+<dt><a class="reference internal" href="#bonne_alphabet.seq_aleatoire" title="bonne_alphabet.seq_aleatoire"><code class="xref py py-func docutils literal notranslate"><span class="pre">seq_aleatoire()</span></code></a></dt>
+<dd>Genère des suites d’entiers aléatoires.</dd>
+<dt><a class="reference internal" href="#bonne_alphabet.nb_inversion" title="bonne_alphabet.nb_inversion"><code class="xref py py-func docutils literal notranslate"><span class="pre">nb_inversion()</span></code></a></dt>
+<dd>Recherche itérative du nombre minimal d’inversion.</dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p>Étant donné que cette fonction fait appel à <cite>nb_inversion</cite>, elle ne peut
+être appliquée que pour des listes de petite taille, afin de garantir
+l’éxécution du calcul dans un temps raisonnable.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bonne_alphabet.score">
+<code class="descclassname">bonne_alphabet.</code><code class="descname">score</code><span class="sig-paren">(</span><em>L</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bonne_alphabet.html#score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bonne_alphabet.score" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Calcul un score d’ordonnancement d’une liste d’entiers.</p>
+<p>Cette fonction calcul le nombre de couples de lettres qui sont consécutives
+dans l’ordre alphabétique et vérifie également si le min(L) est en position 0
+et si le max(L) est en position -1. <cite>L</cite> est une liste de caractères convertis en
+code ascii.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><strong>L</strong> (<em>list</em>) – <cite>L</cite> est une liste d’entiers.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Renvoie:</th><td class="field-body"><strong>score</strong> – <cite>score</cite> est un etier proportionnel à l’ordonnancement de la liste <cite>L</cite>.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Type renvoyé:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">Voir aussi</p>
+<dl class="last docutils">
+<dt><a class="reference internal" href="#bonne_alphabet.adjacent" title="bonne_alphabet.adjacent"><code class="xref py py-func docutils literal notranslate"><span class="pre">adjacent()</span></code></a></dt>
+<dd>Recherche de l’ensemble des éléments consécutifs d’une liste d’entiers.</dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">L1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">97</span><span class="p">,</span><span class="mi">98</span><span class="p">,</span><span class="mi">99</span><span class="p">,</span><span class="mi">101</span><span class="p">,</span><span class="mi">106</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">score</span><span class="p">(</span><span class="n">L1</span><span class="p">)</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">L3</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">score</span><span class="p">(</span><span class="n">L3</span><span class="p">)</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="bonne_alphabet.seq_aleatoire">
+<code class="descclassname">bonne_alphabet.</code><code class="descname">seq_aleatoire</code><span class="sig-paren">(</span><em>l_ascii</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bonne_alphabet.html#seq_aleatoire"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bonne_alphabet.seq_aleatoire" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Mélange une liste.</p>
+<p>Cette fonction permet de générer une séquence alétoire de même
+composition que celle passée en argument.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><strong>l_ascii</strong> (<em>list</em>) – <cite>l_ascii</cite> est une liste d’entiers.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Renvoie:</th><td class="field-body"><strong>l_ascii</strong> – <cite>l_ascii</cite> est une liste d’entiers qui correspond à la liste donnée en argument ordonnée différemment.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Type renvoyé:</th><td class="field-body">list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="bonne_alphabet.stat_parente">
+<code class="descclassname">bonne_alphabet.</code><code class="descname">stat_parente</code><span class="sig-paren">(</span><em>v_alea</em>, <em>d_obs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bonne_alphabet.html#stat_parente"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bonne_alphabet.stat_parente" title="Lien permanent vers cette définition">¶</a></dt>
+<dd><p>Calcul la probabilité d’observer une distance moyenne équivalente à <cite>d_obs</cite> sous l’hypothèse du hasard.</p>
+<p>Cette fonction retourne la probabilité d’observer une distance moyenne équivalente à <cite>d_obs</cite> sous l’hypothèse du hasard.
+Elle prend en argument le nombre minimal d’inversions néecessaires pour ordonner la séquence de gène (<cite>d_obs</cite>), et une liste de
+taille <cite>l</cite> qui contient le nombre minimal d’inversions néecessaires pour ordonner <cite>l</cite> séquences aléatoires de taille équivalente
+à la séquence d’intérêt.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Paramètres:</th><td class="field-body"><ul class="first simple">
+<li><strong>v_alea</strong> (<em>list</em>) – <cite>v_alea</cite> est une liste d’entiers.</li>
+<li><strong>d_obs</strong> (<em>int</em>) – <cite>d_obs</cite> nombre minimal d’inversions néecessaires pour ordonner la séquence de gène.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Renvoie:</th><td class="field-body"><p class="first"><strong>prob</strong> – <cite>prob</cite> est une liste contenant le nombre minimal d’inversion obtenu pour les <cite>n</cite>
+répétitions.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Type renvoyé:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>La statistique retournée correspond à une proportion telle que :</p>
+<div class="math notranslate nohighlight">
+\[P     =  \frac{X}{N}\]</div>
+<p>Où X est le nombre d’inversions aléatoires inférieures à l’observation, et N le nombre total de simulations éffectuées qui
+correspond à la taille de <cite>v_alea</cite></p>
+<p class="rubric">Examples</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stat_parente</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">d</span><span class="p">)</span>
+<span class="go">0.6</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Nombre d'inversion minimal</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction :</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Programme</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">bonne_alphabet module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contexte.html">Contexte historique et biologique :</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Heuristique.html">Implémentation d’une heuristique optimisant le nombre d’inversion :</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">Programme</a><ul>
+      <li>Previous: <a href="modules.html" title="Chapitre précédent">Programme</a></li>
+      <li>Next: <a href="contexte.html" title="Chapitre suivant">Contexte historique et biologique :</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Louise Gsell Emilie Mathian.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/bonne_alphabet.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

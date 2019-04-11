@@ -1,0 +1,802 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>bonne_alphabet &#8212; Documentation Nombre d&#39;inversion minimal 0</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Code source de bonne_alphabet</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot; Ce programme a été rédigé pour la recherche du nombre minimal d&#39;inversion à réaliser pour </span>
+<span class="sd">ordonner une séquence, attention c&#39;est un problème NP complet. Nous avons donc implémenter une heuristique,</span>
+<span class="sd">celle-ci est donc utilisable sur de petites séquences. Ce programme répond à des questions d&#39;organisation des</span>
+<span class="sd">chromosomes, dans le but de recherche de liens de parenté.&quot;&quot;&quot;</span>
+
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">copy</span> <span class="k">as</span> <span class="nn">cp</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<div class="viewcode-block" id="inversion"><a class="viewcode-back" href="../bonne_alphabet.html#bonne_alphabet.inversion">[docs]</a><span class="k">def</span> <span class="nf">inversion</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Inverse les éléments d&#39;une liste.</span>
+
+<span class="sd">    Cette fonction permet de réecrire les éléments de `L` de</span>
+<span class="sd">    droite à gauche.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    L : list</span>
+<span class="sd">        `L` est une liste ou une liste de liste.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Lc : array_like</span>
+<span class="sd">        `Lc` est équivalente à liste `L` lue de droite à gauqhe.</span>
+<span class="sd">        </span>
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; L = [1,2,3,4,5]</span>
+<span class="sd">    &gt;&gt;&gt; inversion(L)</span>
+<span class="sd">    [5, 4, 3, 2, 1]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Lc</span> <span class="o">=</span> <span class="n">cp</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Lc</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="ConvertAsci"><a class="viewcode-back" href="../bonne_alphabet.html#bonne_alphabet.ConvertAsci">[docs]</a><span class="k">def</span> <span class="nf">ConvertAsci</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Converti les éléments d&#39;une liste de lettres en entiers.</span>
+<span class="sd">    </span>
+<span class="sd">    Cette fonction converti une liste de caractères en une liste d&#39;entier correspondant à leur code ascii.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    L : list</span>
+<span class="sd">        `L` est une liste de caractères.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    La : list</span>
+<span class="sd">        `La` est une liste d&#39;entiers correspondant aux codes ascii de la liste `L`.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; L = [&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;e&quot;,&quot;j&quot;]</span>
+<span class="sd">    &gt;&gt;&gt; ConvertAsci(L)</span>
+<span class="sd">    [97, 98, 99, 101, 106]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">L</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">==</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="n">La</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">L</span><span class="p">)):</span>
+        <span class="n">La</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">La</span></div>
+
+
+<div class="viewcode-block" id="adjacent"><a class="viewcode-back" href="../bonne_alphabet.html#bonne_alphabet.adjacent">[docs]</a><span class="k">def</span> <span class="nf">adjacent</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Recherche l&#39;ensemble des éléments consécutifs d&#39;une listes d&#39;entiers.</span>
+
+<span class="sd">    Cette fonction prend en argument une liste d&#39;entiers et retourne</span>
+<span class="sd">    une liste de listes contenant tous les couples d&#39;indices dont les</span>
+<span class="sd">    valeurs dans `L` sont consécutives selon l&#39;ordre numétique. Une liste</span>
+<span class="sd">    vide est retournée si aucun élément de `L` n&#39;est consécutif.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    L : list</span>
+<span class="sd">        `L` est une liste d&#39;entiers.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    adj : array_like</span>
+<span class="sd">        `adj` est une liste de listes contenant tous les couples d&#39;indice</span>
+<span class="sd">        de `L` dont les valeurs sont consécutives.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; L1 = [3,4,1,2]</span>
+<span class="sd">    &gt;&gt;&gt; adjacent(L1)</span>
+<span class="sd">    [[0, 1], [2, 3]]</span>
+<span class="sd">    &gt;&gt;&gt; L2 = [1,2,3,4]</span>
+<span class="sd">    &gt;&gt;&gt; adjacent(L2)</span>
+<span class="sd">    [[0, 1], [1, 2], [2, 3]]</span>
+<span class="sd">    &gt;&gt;&gt; L3 = [2,4,1,3]</span>
+<span class="sd">    &gt;&gt;&gt; adjacent(L3)</span>
+<span class="sd">    []</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">L</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">==</span> <span class="nb">int</span><span class="p">)</span>
+    <span class="n">adj</span><span class="o">=</span><span class="p">[]</span> 
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">L</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span> <span class="p">:</span> 
+            <span class="n">adj</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="n">L</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">adj</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">adj</span></div>
+
+
+<div class="viewcode-block" id="score"><a class="viewcode-back" href="../bonne_alphabet.html#bonne_alphabet.score">[docs]</a><span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calcul un score d&#39;ordonnancement d&#39;une liste d&#39;entiers.</span>
+
+<span class="sd">    Cette fonction calcul le nombre de couples de lettres qui sont consécutives</span>
+<span class="sd">    dans l&#39;ordre alphabétique et vérifie également si le min(L) est en position 0</span>
+<span class="sd">    et si le max(L) est en position -1. `L` est une liste de caractères convertis en</span>
+<span class="sd">    code ascii.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    L : list </span>
+<span class="sd">        `L` est une liste d&#39;entiers.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    score : int</span>
+<span class="sd">        `score` est un etier proportionnel à l&#39;ordonnancement de la liste `L`.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    adjacent : Recherche de l&#39;ensemble des éléments consécutifs d&#39;une liste d&#39;entiers.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; L1 = [97,98,99,101,106]</span>
+<span class="sd">    &gt;&gt;&gt; score(L1)</span>
+<span class="sd">    4</span>
+<span class="sd">    &gt;&gt;&gt; L3 = [2,4,1,3]</span>
+<span class="sd">    &gt;&gt;&gt; score(L3)</span>
+<span class="sd">    0</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">L</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">==</span> <span class="nb">int</span><span class="p">)</span>
+    <span class="n">score</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">adjacent</span><span class="p">(</span><span class="n">L</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">L</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">L</span><span class="p">))</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">score</span><span class="o">+=</span><span class="mi">1</span>
+    <span class="k">if</span> <span class="n">L</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">L</span><span class="p">))</span><span class="o">==</span><span class="nb">len</span><span class="p">(</span><span class="n">L</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">score</span><span class="o">+=</span><span class="mi">1</span>
+    <span class="k">return</span> <span class="n">score</span></div>
+
+
+<div class="viewcode-block" id="end_ord"><a class="viewcode-back" href="../bonne_alphabet.html#bonne_alphabet.end_ord">[docs]</a><span class="k">def</span> <span class="nf">end_ord</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Recherche l&#39;indice du premier élément non trié.</span>
+
+<span class="sd">    Cette fonction recherche le premier élément d&#39;une liste d&#39;entiers</span>
+<span class="sd">    qui n&#39;est pas dans l&#39;ordre numérique croissant et retourne son indice. Si la</span>
+<span class="sd">    valeur retounée est égale à zéro alors les deux premiers éléments</span>
+<span class="sd">    ne sont pas dans le bonne ordre, la suite des éléments étant possiblement</span>
+<span class="sd">    triés. Si la valeur retournée est égale à la longueur de la liste,</span>
+<span class="sd">    alors cele-ci est triée.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    l : list</span>
+<span class="sd">        `l` est une liste d&#39;entiers.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int</span>
+<span class="sd">        `int` est l&#39;indice du premier élément mal positionné de `l`.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    permutation : Recherche itérative de toutes les inversions permettant d&#39;améliorer le score.</span>
+<span class="sd">    nb_inversion : Recherche itérative du nombre minimal d&#39;inversion.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; L1 = [3,4,1,2]</span>
+<span class="sd">    &gt;&gt;&gt; end_ord(L1)</span>
+<span class="sd">    2</span>
+<span class="sd">    &gt;&gt;&gt; L2 = [1,2,3,4]</span>
+<span class="sd">    &gt;&gt;&gt; end_ord(L2)</span>
+<span class="sd">    4</span>
+<span class="sd">    &gt;&gt;&gt; L3 = [2,4,1,3]</span>
+<span class="sd">    &gt;&gt;&gt; end_ord(L3)</span>
+<span class="sd">    0</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">==</span> <span class="nb">int</span><span class="p">)</span>
+    <span class="n">ind</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">cond</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">while</span> <span class="n">cond</span> <span class="p">:</span> 
+        <span class="k">if</span> <span class="n">ind</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">-</span><span class="mi">1</span> <span class="p">:</span>
+            <span class="k">if</span> <span class="n">l</span><span class="p">[</span><span class="n">ind</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="n">l</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span> <span class="p">:</span>  <span class="c1"># Si l&#39;élément courrant +1 est équivalent au suivant. </span>
+                <span class="n">ind</span><span class="o">+=</span><span class="mi">1</span>
+                <span class="n">cond</span> <span class="o">=</span> <span class="kc">True</span> 
+            <span class="k">else</span> <span class="p">:</span>
+                <span class="n">cond</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span> <span class="p">:</span>  <span class="c1"># La liste est entièrement triée.</span>
+            <span class="n">cond</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">ind</span> <span class="o">==</span><span class="mi">0</span> <span class="p">:</span> 
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">else</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="n">ind</span><span class="o">+</span><span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="nb_inversion"><a class="viewcode-back" href="../bonne_alphabet.html#bonne_alphabet.nb_inversion">[docs]</a><span class="k">def</span> <span class="nf">nb_inversion</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">v2</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calcul le nombre d&#39;inversion nécéssaire dans une chaine de caractères composées de lettre de l&#39;alphabet consécutives pour atteindre l&#39;ordre alphabétique.</span>
+
+<span class="sd">    Cette fonction calcul le nombre minimum d&#39;inversions necessaires pour obtenir une chaine de caractère odonnée dans une chaine </span>
+<span class="sd">    de caractères composées de lettre de l&#39;alphabet consécutives. L&#39;utilisateur peut choisir d&#39;appeler une version v2</span>
+<span class="sd">    de la fonction permutation dans le cas où la chaine de caractère est courte ou si il lance la fonction scenario_aleatoire. </span>
+<span class="sd">    Par défaut v2=False, pour utiliser v2 donner en paramètre v2=True.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    l : list</span>
+<span class="sd">        `l` est une chaîne de caractères.</span>
+<span class="sd">    v2 : bool</span>
+<span class="sd">        `v2` est un booleen qui vaut False par défaut et entraine l&#39;utilisation de la fonction permutation. </span>
+<span class="sd">        Si l&#39;utilisateur donne en argument v2=True alors c&#39;est la fonction permutation_v2 qui est appelée.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    min_nb_inv : int</span>
+<span class="sd">        `min_nb_inv` est un entier représentif du nombre d&#39;inversion minimum dans une liste pour atteindre l&#39;ordre alphabétique.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    ConvertAsci : Converti les elements d&#39;une liste en l_ascii.</span>
+<span class="sd">    score : Calcul un score de ressamblance à l&#39;ordre alphabétique pour une liste de code ascii.</span>
+<span class="sd">    permutation : Recherche itérative de toutes les inversions permettant d&#39;améliorer le score.</span>
+<span class="sd">    permutation_v2 : Recherche exhaustive des inversions.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; l1 = &quot;abcdef&quot;</span>
+<span class="sd">    &gt;&gt;&gt; nb_inversion(l1)</span>
+<span class="sd">    0</span>
+<span class="sd">    &gt;&gt;&gt; l2 = &quot;cdab&quot;</span>
+<span class="sd">    &gt;&gt;&gt; nb_inversion(l2)</span>
+<span class="sd">    2</span>
+<span class="sd">    &gt;&gt;&gt; l3 = &quot;aebcfdg&quot;</span>
+<span class="sd">    &gt;&gt;&gt; nb_inversion(l3,v2=False)</span>
+<span class="sd">    4</span>
+<span class="sd">    &gt;&gt;&gt; nb_inversion(l3)</span>
+<span class="sd">    4</span>
+<span class="sd">    &gt;&gt;&gt; nb_inversion(l2,v2=True)</span>
+<span class="sd">    2</span>
+<span class="sd">    &gt;&gt;&gt; nb_inversion(l2,True)</span>
+<span class="sd">    2</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">l_ascii</span><span class="o">=</span> <span class="n">ConvertAsci</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="c1">#converti en liste de code ascii</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">l_ascii</span> <span class="o">=</span> <span class="n">l</span>
+    <span class="n">s</span><span class="o">=</span><span class="n">score</span><span class="p">(</span><span class="n">l_ascii</span><span class="p">)</span> <span class="c1">#score initial de la sequence</span>
+    <span class="n">l_nb_inv</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># Liste du nombre d&#39;inversion nécessaire par &quot;branche&quot;</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">v2</span> <span class="o">==</span> <span class="kc">False</span> <span class="p">:</span>
+        <span class="n">P</span>  <span class="o">=</span> <span class="n">permutation</span><span class="p">(</span><span class="n">l_ascii</span> <span class="p">,</span> <span class="n">s</span> <span class="p">,</span> <span class="n">d</span> <span class="p">)</span> <span class="c1"># Stack </span>
+    <span class="k">else</span> <span class="p">:</span>
+        <span class="n">P</span> <span class="o">=</span> <span class="n">permutation_v2</span><span class="p">(</span><span class="n">l_ascii</span> <span class="p">,</span> <span class="n">s</span> <span class="p">,</span> <span class="n">d</span> <span class="p">)</span>
+    <span class="n">nb_inv</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">P</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">:</span> <span class="c1"># Tant que la pile n&#39;est pas vide </span>
+        <span class="n">nb_inv</span> <span class="o">+=</span> <span class="mi">1</span> <span class="c1"># On augmente le compteur pour la &quot;branche&quot; parcourue</span>
+        <span class="n">l_ascii</span> <span class="o">=</span> <span class="n">P</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># On récupère le premier élement de la pile </span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">P</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># score du premier elmt de la pile</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">P</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># Distance à l&#39;origine du premier éléement de la pile</span>
+
+        <span class="k">if</span> <span class="n">s</span><span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">l_ascii</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>  <span class="p">:</span> <span class="c1"># Si la seqence n&#39;est pas triee</span>
+            <span class="k">if</span> <span class="n">v2</span> <span class="o">==</span> <span class="kc">False</span> <span class="p">:</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">permutation</span><span class="p">(</span><span class="n">l_ascii</span> <span class="p">,</span> <span class="n">s</span> <span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="c1"># permutation du premier elmt</span>
+            <span class="k">else</span> <span class="p">:</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">permutation_v2</span><span class="p">(</span><span class="n">l_ascii</span> <span class="p">,</span> <span class="n">s</span> <span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+            <span class="n">P</span><span class="o">=</span> <span class="n">P</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="c1"># Retire la permutation en cours de traitement </span>
+            <span class="n">P</span> <span class="o">=</span> <span class="n">p</span><span class="o">+</span> <span class="n">P</span> <span class="c1"># Ajoute les résultats de &quot;permutation&quot; en tête de liste</span>
+            
+        <span class="k">else</span> <span class="p">:</span> <span class="c1"># On a finis de trier une &quot;branche&quot;</span>
+            <span class="n">l_nb_inv</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">P</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span> <span class="c1"># On ajoute à la liste des résultats le nombre de permutation nécessaire pour obtenir un succes</span>
+            <span class="n">P</span><span class="o">=</span> <span class="n">P</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="c1"># On enlève la permutation ayant conduit au succès</span>
+            <span class="c1">#nb_inv = 0 # Et on réinitialise le score</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">l_nb_inv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">:</span>
+        <span class="n">min_nb_inv</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">l_nb_inv</span><span class="p">)</span>
+    <span class="k">else</span> <span class="p">:</span> <span class="c1"># Aucune inversion n&#39;a été nécessaire</span>
+        <span class="n">min_nb_inv</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">min_nb_inv</span></div>
+
+
+<div class="viewcode-block" id="permutation"><a class="viewcode-back" href="../bonne_alphabet.html#bonne_alphabet.permutation">[docs]</a><span class="k">def</span> <span class="nf">permutation</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">score_courant</span><span class="p">,</span> <span class="n">dist</span><span class="p">):</span>  
+    <span class="sd">&quot;&quot;&quot;Recherche presque exhaustive des inversions dans une liste d&#39;entiers pour l&#39;ordonner.</span>
+
+<span class="sd">    Cette fonction prend en argument une liste d&#39;entiers, son `score_courant`</span>
+<span class="sd">    (cf : `score`), ainsi que sa distance à l&#39;origine (i.e. à la séquence initiale).</span>
+<span class="sd">    En effet elle est appellée par la procédure `nb_inversion`, qui détermine</span>
+<span class="sd">    le nombre d&#39;inversions nécessaires pour trier une liste, ce nombre</span>
+<span class="sd">    d&#39;inversions détermine la distance l&#39;origine d&#39;une possibilité.</span>
+
+<span class="sd">    Ainsi étant donné une liste et son état courant, `permutation` commence</span>
+<span class="sd">    par déterminer la séquence à inverser, si une inversion est nécessaire.</span>
+<span class="sd">    Pour `i` allant de 0 à la taille de la séquence à inverser -1, `permuatation`</span>
+<span class="sd">    genère l&#39;inversion de taille `i`, et recalcul le score. Si celui-ci au</span>
+<span class="sd">    moins égal au `score_courant`, `permutation` retient la liste inversée,</span>
+<span class="sd">    son score et incrémente sa distance de 1.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    L : list</span>
+<span class="sd">        `L` est une liste d&#39;entiers.</span>
+<span class="sd">    score_courant : int</span>
+<span class="sd">        Score de la liste (cf : `score`).</span>
+<span class="sd">    dist :  int</span>
+<span class="sd">        `dist` est la distance à l&#39;origine pour la séquence `L`, traduit le nombre d&#39;inversions</span>
+<span class="sd">        qui ont déjà été réalisées sur `L`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    res : liste de tuples</span>
+<span class="sd">        `res` est une liste contanant autant de tuple que d&#39;inversions</span>
+<span class="sd">        conservées. Chaque tuple est constitué de la séquence après</span>
+<span class="sd">        inversion, de son score et de sa distance (`dist` + 1).</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    nb_inversion   : Recherche itérative du nombre minimal d&#39;inversion.</span>
+<span class="sd">    permutation_v2 : Recherche exhaustive des inversions.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Étant donné que cette fonction fait appel à `nb_inversion`, elle ne peut</span>
+<span class="sd">    être appliquée que pour des listes de petite taille, afin de garantir</span>
+<span class="sd">    l&#39;éxécution du calcul dans un temps raisonnable.</span>
+
+<span class="sd">    `permutation` gère les cas suivants :</span>
+<span class="sd">    1 : Si `L` est déjà triée alors une liste vide est renvoyée.</span>
+
+<span class="sd">    2 : Si et seulement si le début de `L` est trié la séquence à</span>
+<span class="sd">    inverser correspond aux éléments situés après le dernier</span>
+<span class="sd">    élément dans le bon ordre.</span>
+<span class="sd">    Exemple : ABEDC -&gt; Séquence à inverser = EDC</span>
+
+<span class="sd">    3 : Si le début de la séquence n&#39;est pas trié alors</span>
+<span class="sd">    la séquence à inverser correspond à l&#39;ensemble des éléments</span>
+<span class="sd">    situés avant l&#39;élément minimal.</span>
+<span class="sd">    Exemple : EDABC -&gt; Séquence à inverser = EDA</span>
+
+<span class="sd">    4 : Si les premiers éléments de `L` sont successif mais</span>
+<span class="sd">    si le premier élément n&#39;est pas bien placé alors la séquence</span>
+<span class="sd">    à inverser correspond à l&#39;ensemble des éléments situés en</span>
+<span class="sd">    amont du premier élément.</span>
+<span class="sd">    Exemple : BCAED -&gt; Séquence à inverser = BCA</span>
+
+<span class="sd">    5 :  Si la première lettre est bien placée et si seulement</span>
+<span class="sd">    la première l&#39;est alors la séquence à inverser correspond</span>
+<span class="sd">    aux éléments situés après le premier élément et l&#39;élément</span>
+<span class="sd">    minimal (sans prise en compte du premier).</span>
+<span class="sd">    Exemple : ACBDFE -&gt; Séquence à inverser = CB</span>
+<span class="sd">    </span>
+<span class="sd">    Attention cette fonction ne permet pas d&#39;obtenir le nombre </span>
+<span class="sd">    minimal d&#39;inversion dans le cas où la séquence à inverser</span>
+<span class="sd">    n&#39;est pas contenure entre la séquence déjà triée et la lettre</span>
+<span class="sd">    minimal.</span>
+
+<span class="sd">    Exemple:</span>
+<span class="sd">    Mot = A E B C F D G</span>
+<span class="sd">    1   : A B E C F D G</span>
+<span class="sd">    2   : A B C E F D G</span>
+<span class="sd">    3   : A B C D F E G</span>
+<span class="sd">    4   : A B C D E F G</span>
+
+<span class="sd">    Dans ce cas très précis le nombre d&#39;inversion minimal est </span>
+<span class="sd">    trois ainsi la version 2 de permutation doit être utilisée.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; L1 = [1,2,5,4,3]</span>
+<span class="sd">    &gt;&gt;&gt; S1 = score(L1)</span>
+<span class="sd">    &gt;&gt;&gt; permutation(L1,S1,0)  # Cas n°2</span>
+<span class="sd">    [([1, 2, 3, 4, 5], 6, 1)]</span>
+<span class="sd">    &gt;&gt;&gt; L2 = [5,4,1,2,3]</span>
+<span class="sd">    &gt;&gt;&gt; S2 = score(L2)</span>
+<span class="sd">    &gt;&gt;&gt; permutation(L2,S2,0)  # Cas n°3</span>
+<span class="sd">    [([1, 4, 5, 2, 3], 3, 1)]</span>
+<span class="sd">    &gt;&gt;&gt; L3 = [2,3,1,5,4]</span>
+<span class="sd">    &gt;&gt;&gt; S3 = score(L3)</span>
+<span class="sd">    &gt;&gt;&gt; permutation(L3,S3,0)  # Cas n°4</span>
+<span class="sd">    [([1, 3, 2, 5, 4], 3, 1), ([2, 1, 3, 5, 4], 2, 1)]</span>
+<span class="sd">    &gt;&gt;&gt; L4 = [1,3,2,4,6,5]</span>
+<span class="sd">    &gt;&gt;&gt; S4 = score(L4)</span>
+<span class="sd">    &gt;&gt;&gt; permutation(L4,S4,0)  # Cas n°5</span>
+<span class="sd">    [([1, 2, 3, 4, 6, 5], 5, 1)]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">L</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">==</span> <span class="nb">int</span><span class="p">)</span>
+    <span class="k">assert</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">score_courant</span><span class="p">)</span><span class="o">==</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">sorted_to</span> <span class="o">=</span>  <span class="n">end_ord</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>  <span class="c1"># Retourne l&#39;indice du premier élément qui n&#39;est plus dans l&#39;ordre</span>
+    <span class="n">Spe_cond</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Condition spéciale (cf : Cas n°5)</span>
+
+    <span class="k">if</span> <span class="n">sorted_to</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>  <span class="c1"># Cas n°1</span>
+        <span class="n">min_letter</span><span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">L</span><span class="p">[</span> <span class="n">sorted_to</span> <span class="p">:]))</span> 
+        <span class="k">if</span> <span class="n">sorted_to</span> <span class="o">!=</span> <span class="n">min_letter</span> <span class="p">:</span>  <span class="c1"># Condition nécessaire pour dans le cas où le début de la séquence est déjà trié (Exemple : Mot2= &quot;ABEDC&quot;) (Cas n°2 et n°3)</span>
+            <span class="n">seq_to_permute</span> <span class="o">=</span><span class="n">L</span><span class="p">[</span> <span class="n">sorted_to</span> <span class="p">:</span><span class="n">min_letter</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1"># Recupération de la liste à permuter jusqu&#39;à l&#39;élément minimale inclus (+1)</span>
+        <span class="k">else</span> <span class="p">:</span>  <span class="c1"># Cas n°4 et n°5</span>
+            <span class="k">if</span> <span class="n">min_letter</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># Si la première n&#39;est pas à la bonne position (Exemple : Mot1= &quot;BCAED&quot;) (Cas n°4)</span>
+                <span class="n">seq_to_permute</span> <span class="o">=</span><span class="n">L</span><span class="p">[</span> <span class="p">:</span> <span class="n">sorted_to</span>  <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>  <span class="c1"># Récupéreration de la séquence jusqu&#39;au premiere élément inclus</span>
+            <span class="k">else</span> <span class="p">:</span>  <span class="c1"># Si la première lettre est bien placée et si seulement la première (Exemple : Mot3=&quot;ACBDFE&quot;) (Cas n°5)</span>
+                <span class="n">Spe_cond</span> <span class="o">=</span> <span class="kc">True</span> 
+                <span class="n">min_letter</span><span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">L</span><span class="p">[</span> <span class="mi">1</span> <span class="p">:]))</span> <span class="c1"># Redéfinition du minimum</span>
+                <span class="n">seq_to_permute</span> <span class="o">=</span><span class="n">L</span><span class="p">[</span> <span class="mi">1</span><span class="p">:</span> <span class="n">min_letter</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="c1"># La séquence est entre le deuxième élément et l&#39;élément minimale</span>
+    
+        <span class="n">seq_after_permutation</span> <span class="o">=</span><span class="p">[]</span>  <span class="c1"># Liste des résultats d&#39;une permuation </span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Liste de toute les permutations admises</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seq_to_permute</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>  <span class="c1"># (-1) pour s&#39;assurer que la séquence à inverser a une longueur supérieure à 1 </span>
+            <span class="n">seq_inv</span> <span class="o">=</span> <span class="n">inversion</span><span class="p">(</span><span class="n">seq_to_permute</span><span class="p">[</span><span class="n">i</span><span class="p">:])</span>  <span class="c1"># inversion de la séquence à permuter </span>
+
+            <span class="k">if</span> <span class="n">sorted_to</span> <span class="o">!=</span> <span class="n">min_letter</span> <span class="p">:</span>  <span class="c1"># Dans le cas où le début de la séquence est déjà dans le bon ordre (Mot 2 et 3) (Cas n°2 , n°3 et n°5)</span>
+                <span class="k">if</span> <span class="n">Spe_cond</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>  <span class="c1"># La lettre lettre minimale n&#39;est pas la seule bien placée (Mot 2) (Cas n°2 , n°3)</span>
+                    <span class="n">seq_after_permutation</span> <span class="o">=</span> <span class="n">L</span><span class="p">[:</span><span class="n">sorted_to</span><span class="o">+</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span><span class="n">seq_inv</span> <span class="o">+</span> <span class="n">L</span><span class="p">[</span><span class="n">min_letter</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+                <span class="k">else</span> <span class="p">:</span> <span class="c1"># Sinon la condition spéciale est vraie (Mot 3) (Cas n°5)</span>
+                    <span class="n">first_elmt</span> <span class="o">=</span> <span class="p">[</span><span class="n">L</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="c1"># Nécessaire car sinon on traite un entier </span>
+                    <span class="n">seq_after_permutation</span> <span class="o">=</span> <span class="n">first_elmt</span><span class="o">+</span> <span class="n">seq_inv</span> <span class="o">+</span>  <span class="n">L</span><span class="p">[</span><span class="n">min_letter</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+
+            <span class="k">else</span> <span class="p">:</span>  <span class="c1"># Si le début de la séquence n&#39;est pas trié (Mot 1) (Cas n°4)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq_to_permute</span><span class="p">)</span><span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq_inv</span><span class="p">):</span> <span class="c1"># Pour la première itération</span>
+                    <span class="n">seq_after_permutation</span> <span class="o">=</span> <span class="n">seq_inv</span> <span class="o">+</span><span class="n">L</span><span class="p">[</span><span class="n">min_letter</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+                <span class="k">else</span> <span class="p">:</span>  <span class="c1"># Dans les cas suivants</span>
+                    <span class="n">seq_after_permutation</span> <span class="o">=</span> <span class="n">L</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">seq_to_permute</span><span class="p">)</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">seq_inv</span><span class="p">)]</span><span class="o">+</span><span class="n">seq_inv</span><span class="o">+</span><span class="n">L</span><span class="p">[</span><span class="n">min_letter</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+
+            <span class="n">c_score</span> <span class="o">=</span> <span class="n">score</span><span class="p">(</span><span class="n">seq_after_permutation</span><span class="p">)</span> <span class="c1"># Calcul du nouveau score</span>
+    
+            <span class="k">if</span> <span class="n">c_score</span> <span class="o">&gt;=</span> <span class="n">score_courant</span><span class="p">:</span> <span class="c1"># Si on a une amélioration ou une égalité </span>
+                <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">seq_after_permutation</span> <span class="p">,</span> <span class="n">c_score</span> <span class="p">,</span> <span class="n">dist</span><span class="o">+</span><span class="mi">1</span> <span class="p">))</span> <span class="c1"># On retient la permutation         </span>
+        <span class="k">return</span> <span class="n">res</span>
+
+    <span class="k">else</span><span class="p">:</span> <span class="c1"># La séquence est déjà triée</span>
+        <span class="k">return</span> <span class="p">[]</span>  <span class="c1"># On retourne une liste vide </span></div>
+
+
+<div class="viewcode-block" id="permutation_v2"><a class="viewcode-back" href="../bonne_alphabet.html#bonne_alphabet.permutation_v2">[docs]</a><span class="k">def</span> <span class="nf">permutation_v2</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">score_courant</span><span class="p">,</span> <span class="n">dist</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Recherche exhaustive des inversions pour l&#39;ordonner.</span>
+
+<span class="sd">    Cette fonction prend en argument une liste d&#39;entiers, son `score_courant`</span>
+<span class="sd">    (cf : `score`), ainsi que sa distance à l&#39;origine (à la séquence initiale).</span>
+<span class="sd">    En effet elle est appellée par la procédure `nb_inversion`, qui détermine</span>
+<span class="sd">    le nombre d&#39;inversions nécessaires pour trier une liste, ce nombre</span>
+<span class="sd">    d&#39;inversions détermine la distance l&#39;origine d&#39;une possibilité. </span>
+<span class="sd">    Cette fonction est donc semblable à `permutation`. Cette version permet </span>
+<span class="sd">    toutefois une recherche exhaustive de toutes les permutations. Le nombre </span>
+<span class="sd">    de combinaison pouvant être relativement grand, cette fonction n&#39;est adaptée</span>
+<span class="sd">    que pour des séquences de taille inférieurs 8. </span>
+
+<span class="sd">    Ainsi étant donné une liste et son état courant, `permutation_v2` recherhe</span>
+<span class="sd">    la partie de la séquence qui  a déjà été ordonnée, puis génère toute les </span>
+<span class="sd">    inversion possible. Une inversion sera retenue si et seulement si elle permet</span>
+<span class="sd">    de conserver ou d&#39;augmenter le score.</span>
+
+<span class="sd">    La fonction `permutation_v2` retourne ainsi la liste de toute les inversions. </span>
+<span class="sd">    À chaque élément de la liste des résultats est associé la séquence d&#39;entiers,</span>
+<span class="sd">    le score associé à cette séquence et la distance à l&#39;origine. En effet la </span>
+<span class="sd">    distance de chaque séquences retenue est incrémentée d&#39;une unité, étant </span>
+<span class="sd">    donné qu&#39;elles sont la résultante d&#39;une inversion.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    L : list</span>
+<span class="sd">        `L` est une liste d&#39;entiers.</span>
+<span class="sd">    score_courant : int</span>
+<span class="sd">        Score de la liste (cf : `score`).</span>
+<span class="sd">    dist :  int</span>
+<span class="sd">        Distance à l&#39;origine pour la séquence `L`, traduit le nombre d&#39;inversions</span>
+<span class="sd">        qui ont déjà été réalisées sur `L`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    res : liste de tuples</span>
+<span class="sd">        `res` est une liste contanant autant de tuple que d&#39;inversions</span>
+<span class="sd">        conservées. Chaque tuple est constitué de la séquence après</span>
+<span class="sd">        inversion, de son score et de sa distance (`dist` + 1).</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    nb_inversion   : Recherche itérative du nombre minimal d&#39;inversion</span>
+<span class="sd">    permutation    : Recherche exhaustive des inversions</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Étant donné que cette fonction fait appel à `nb_inversion`, elle ne peut</span>
+<span class="sd">    être appliquée que pour des listes de petite taille, afin de garantir</span>
+<span class="sd">    l&#39;éxécution du calcul dans un temps raisonnable. Ceci est particulièrement</span>
+<span class="sd">    pour cette deuxième version de `permutation_v2`.</span>
+
+<span class="sd">    Etant donné une séquence `L` `permutation_v2`, recherche la partie déjà </span>
+<span class="sd">    triée, de taille N. Pour la séquence à trier elle génere toutes les permutation</span>
+<span class="sd">    possibles. Pour ce faire elle commence donc à itérer à partir de la première </span>
+<span class="sd">    lettre non triée d&#39;indice N+1 , et génère toutes les permutations pour cette </span>
+<span class="sd">    position. Puis elle recommence pour la deuxième lettre non triée etc...</span>
+<span class="sd">    Les inversions testées peuvent être résumées  telles que :</span>
+<span class="sd">    .. math::</span>
+<span class="sd">    </span>
+<span class="sd">        perm(i,N+j) = \\sum_{i=1}^{i=L-(N+j-1)} inv(L[N+j : N+j+i])</span>
+
+<span class="sd">    Dans cette formule i correspond à la i ème permutation, et N+j</span>
+<span class="sd">    à la position de lettre non triée considérée. À chaque itération les éléments</span>
+<span class="sd">    d&#39;indice compris entre (N+j) et  et (N+j+i) sont inversés</span>
+<span class="sd">    </span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; L1 = [1,2,5,4,3]</span>
+<span class="sd">    &gt;&gt;&gt; S1 = score(L1)</span>
+<span class="sd">    &gt;&gt;&gt; permutation(L1,S1,0)  # Cas n°2</span>
+<span class="sd">    [([1, 2, 3, 4, 5], 6, 1)]</span>
+<span class="sd">    &gt;&gt;&gt; L2 = [5,4,1,2,3]</span>
+<span class="sd">    &gt;&gt;&gt; S2 = score(L2)</span>
+<span class="sd">    &gt;&gt;&gt; permutation(L2,S2,0)  # Cas n°3</span>
+<span class="sd">    [([1, 4, 5, 2, 3], 3, 1)]</span>
+<span class="sd">    &gt;&gt;&gt; L3 = [2,3,1,5,4]</span>
+<span class="sd">    &gt;&gt;&gt; S3 = score(L3)</span>
+<span class="sd">    &gt;&gt;&gt; permutation(L3,S3,0)  # Cas n°4</span>
+<span class="sd">    [([1, 3, 2, 5, 4], 3, 1), ([2, 1, 3, 5, 4], 2, 1)]</span>
+<span class="sd">    &gt;&gt;&gt; L4 = [1,3,2,4,6,5]</span>
+<span class="sd">    &gt;&gt;&gt; S4 = score(L4)</span>
+<span class="sd">    &gt;&gt;&gt; permutation(L4,S4,0)  # Cas n°5</span>
+<span class="sd">    [([1, 2, 3, 4, 6, 5], 5, 1)]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sorted_to</span> <span class="o">=</span>  <span class="n">end_ord</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+    <span class="n">min_letter</span><span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">L</span><span class="p">[</span> <span class="n">sorted_to</span> <span class="p">:]))</span>
+    <span class="n">res</span> <span class="o">=</span><span class="p">[]</span>
+    <span class="k">if</span> <span class="n">sorted_to</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">L</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">sorted_to</span> <span class="o">==</span> <span class="n">min_letter</span> <span class="p">:</span>
+            <span class="k">if</span> <span class="n">min_letter</span> <span class="o">==</span><span class="mi">0</span> <span class="p">:</span>
+                <span class="n">sorted_to</span> <span class="o">+=</span><span class="mi">1</span>
+            <span class="k">else</span> <span class="p">:</span> 
+                <span class="n">sorted_to</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sorted_to</span><span class="p">,</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">sorted_to</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+                <span class="k">if</span>  <span class="n">b</span><span class="o">&lt;</span><span class="n">e</span> <span class="p">:</span>
+                    <span class="k">if</span> <span class="n">dist</span><span class="o">&lt;=</span><span class="nb">len</span><span class="p">(</span><span class="n">L</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span> <span class="p">:</span>
+                        <span class="n">seq_inv</span> <span class="o">=</span> <span class="n">inversion</span><span class="p">(</span> <span class="n">L</span><span class="p">[</span><span class="n">b</span><span class="p">:</span><span class="n">e</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+                        <span class="n">seq_after_permutation</span> <span class="o">=</span> <span class="n">L</span><span class="p">[:</span><span class="n">b</span><span class="p">]</span><span class="o">+</span><span class="n">seq_inv</span><span class="o">+</span> <span class="n">L</span><span class="p">[</span><span class="n">e</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">L</span><span class="p">)]</span>
+                        <span class="n">score_c</span> <span class="o">=</span> <span class="n">score</span><span class="p">(</span><span class="n">seq_after_permutation</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">score_c</span> <span class="o">&gt;=</span> <span class="n">score_courant</span> <span class="p">:</span>
+                            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">seq_after_permutation</span> <span class="p">,</span> <span class="n">score_c</span> <span class="p">,</span> <span class="n">dist</span><span class="o">+</span><span class="mi">1</span> <span class="p">))</span>     
+        <span class="k">return</span> <span class="n">res</span>
+    <span class="k">else</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+
+<div class="viewcode-block" id="seq_aleatoire"><a class="viewcode-back" href="../bonne_alphabet.html#bonne_alphabet.seq_aleatoire">[docs]</a><span class="k">def</span> <span class="nf">seq_aleatoire</span><span class="p">(</span><span class="n">l_ascii</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Mélange une liste.</span>
+
+<span class="sd">    Cette fonction permet de générer une séquence alétoire de même</span>
+<span class="sd">    composition que celle passée en argument.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    l_ascii : list</span>
+<span class="sd">        `l_ascii` est une liste d&#39;entiers.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    l_ascii : list</span>
+<span class="sd">        `l_ascii` est une liste d&#39;entiers qui correspond à la liste donnée en argument ordonnée différemment.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">l_ascii</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">l_ascii</span></div>
+
+
+<div class="viewcode-block" id="scenario_aleatoire"><a class="viewcode-back" href="../bonne_alphabet.html#bonne_alphabet.scenario_aleatoire">[docs]</a><span class="k">def</span> <span class="nf">scenario_aleatoire</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">n</span><span class="p">,</span> <span class="n">write</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Recherche du nombre d&#39;inversions minimal dans une liste aléatoires d&#39;entiers consecutifs.</span>
+
+<span class="sd">    Cette fonction prend en argument une liste d&#39;entiers, elle la mélange</span>
+<span class="sd">    puis calcul le nombre d&#39;inversions minimal nécessaire la trier. Ce</span>
+<span class="sd">    processus est répété `n` fois. En sortie cette fonction retourne une</span>
+<span class="sd">    liste de taille `n` contenant le nombre d&#39;inversions minimal trouvé</span>
+<span class="sd">    pour chaque test, ainsi que le nombre moyen d&#39;inversions obtenu pour</span>
+<span class="sd">    une liste de taille `l`. L&#39;utilisateur peut choisir d&#39;enregistrer les</span>
+<span class="sd">    résultats dans un fichier texte pour cela il doit préciser le non du </span>
+<span class="sd">    fichier. </span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    l : list</span>
+<span class="sd">        `l` est une liste d&#39;entiers.</span>
+<span class="sd">    n : int</span>
+<span class="sd">        `n` nombre d&#39;itérations à effectuer.</span>
+<span class="sd">    write : bool</span>
+<span class="sd">        `write` est un booléen si la fonction écrit ou non les résultats dans un fichier.</span>
+<span class="sd">    file_name : </span>
+<span class="sd">        `file_name` est le nom du fichier qui contiendra les résultat si write = True.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    res : list</span>
+<span class="sd">        `res` est une liste contenant le nombre minimal d&#39;inversion obtenu pour les `n`</span>
+<span class="sd">        répétitions.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    seq_aleatoire : Genère des suites d&#39;entiers aléatoires.</span>
+<span class="sd">    nb_inversion : Recherche itérative du nombre minimal d&#39;inversion.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Étant donné que cette fonction fait appel à `nb_inversion`, elle ne peut</span>
+<span class="sd">    être appliquée que pour des listes de petite taille, afin de garantir</span>
+<span class="sd">    l&#39;éxécution du calcul dans un temps raisonnable.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">write</span> <span class="o">==</span> <span class="kc">True</span> <span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Nb_itertion </span><span class="se">\t</span><span class="s2"> Min_inv </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="n">res</span> <span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="n">seq_aleatoire</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+        <span class="n">c_res</span> <span class="o">=</span> <span class="n">nb_inversion</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c_res</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">write</span> <span class="o">==</span> <span class="kc">True</span> <span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> </span><span class="se">\t</span><span class="s2"> </span><span class="si">%d</span><span class="s2"> </span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">c_res</span><span class="p">))</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="n">moy_dist</span><span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">res</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span><span class="p">,</span> <span class="n">moy_dist</span></div>
+
+
+<div class="viewcode-block" id="stat_parente"><a class="viewcode-back" href="../bonne_alphabet.html#bonne_alphabet.stat_parente">[docs]</a><span class="k">def</span> <span class="nf">stat_parente</span><span class="p">(</span><span class="n">v_alea</span><span class="p">,</span> <span class="n">d_obs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calcul la probabilité d&#39;observer une distance moyenne équivalente à `d_obs` sous l&#39;hypothèse du hasard.</span>
+
+<span class="sd">    Cette fonction retourne la probabilité d&#39;observer une distance moyenne équivalente à `d_obs` sous l&#39;hypothèse du hasard.</span>
+<span class="sd">    Elle prend en argument le nombre minimal d&#39;inversions néecessaires pour ordonner la séquence de gène (`d_obs`), et une liste de</span>
+<span class="sd">    taille `l` qui contient le nombre minimal d&#39;inversions néecessaires pour ordonner `l` séquences aléatoires de taille équivalente</span>
+<span class="sd">    à la séquence d&#39;intérêt. </span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v_alea : list</span>
+<span class="sd">        `v_alea` est une liste d&#39;entiers.</span>
+<span class="sd">    d_obs : int</span>
+<span class="sd">        `d_obs` nombre minimal d&#39;inversions néecessaires pour ordonner la séquence de gène.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    prob : list</span>
+<span class="sd">        `prob` est une liste contenant le nombre minimal d&#39;inversion obtenu pour les `n`</span>
+<span class="sd">        répétitions.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    La statistique retournée correspond à une proportion telle que :</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">    </span>
+<span class="sd">        P     =  \\frac{X}{N} </span>
+<span class="sd">       </span>
+
+<span class="sd">    Où X est le nombre d&#39;inversions aléatoires inférieures à l&#39;observation, et N le nombre total de simulations éffectuées qui</span>
+<span class="sd">    correspond à la taille de `v_alea`</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; v = [1,2,3,4,5]</span>
+<span class="sd">    &gt;&gt;&gt; d = 4</span>
+<span class="sd">    &gt;&gt;&gt; stat_parente(v,d)</span>
+<span class="sd">    0.6</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">res_alea</span> <span class="ow">in</span> <span class="n">v_alea</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">res_alea</span> <span class="o">&lt;</span> <span class="n">d_obs</span><span class="p">:</span>
+            <span class="n">e</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">prob</span> <span class="o">=</span> <span class="n">e</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">v_alea</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">prob</span></div>
+
+
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>    
+
+    <span class="kn">import</span> <span class="nn">doctest</span>
+    <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Nombre d'inversion minimal</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction :</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Programme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contexte.html">Contexte historique et biologique :</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Heuristique.html">Implémentation d’une heuristique optimisant le nombre d’inversion :</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Code du module</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Louise Gsell Emilie Mathian.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

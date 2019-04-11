@@ -1,0 +1,162 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Implémentation d’une heuristique optimisant le nombre d’inversion : &#8212; Documentation Nombre d&#39;inversion minimal 0</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" />
+    <link rel="prev" title="Contexte historique et biologique :" href="contexte.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="implementation-d-une-heuristique-optimisant-le-nombre-d-inversion">
+<h1>Implémentation d’une heuristique optimisant le nombre d’inversion :<a class="headerlink" href="#implementation-d-une-heuristique-optimisant-le-nombre-d-inversion" title="Lien permanent vers ce titre">¶</a></h1>
+<div class="section" id="calcul-d-un-score-d-organisation">
+<h2>Calcul d’un score d’organisation :<a class="headerlink" href="#calcul-d-un-score-d-organisation" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Afin de connaître à tout moment l’état d’organisation de la séquence en cours d’analyse, nous avons mis en place un score. Ce score traduit  le nombre de lettre bien placées. Pour être  calculer nous avons dénombrer le nombre d’éléments adjacents, soit le nombre de lettres consécutives dans l’ordre alphabétique, ceci est réalisé grâce à la fonction <em>adjacent</em>. Le score d’une séquence est donc égal à la longueur de la liste retournée par <em>adjacent</em> plus un si la première lettre est bien placée et plus un si la dernière lettre est bien placée. Ce score est calculé par la fonction <em>Score</em>. Pour simplifier notre exposé nous parlerons de séquences lettres, bien que pour faciliter l’implémentation de la méthode les séquences de lettres sont généralement converties en liste d’entiers correspondant  aux valeurs ascii des caractères, via la fonction <em>ConvertAsci</em>.</p>
+<img alt="_images/SCORE.jpeg" src="_images/SCORE.jpeg" />
+</div>
+<div class="section" id="enumeration-des-permutations">
+<h2>Énumération des permutations :<a class="headerlink" href="#enumeration-des-permutations" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Pour résoudre le problème de Sturtevant, chaque inversion doit permettre d’augmenter la taille de la séquence triée, soit le score. Ainsi d’après l’exemple mentionné ci-dessus nous pourrions inverser la séquence afin de placer le «&nbsp;A&nbsp;» en première position, le «&nbsp;B&nbsp;» serait alors bien placé. Puis réaliser une nouvelle inversion pour placer le «&nbsp;C&nbsp;» à la suite du «&nbsp;B, ce qui permettrait de bien positionner la lettre «&nbsp;D&nbsp;» etc. Cette logique permettrait d’obtenir la solution mais le nombre d’inversion nécessaire n’est pas optimal. En effet en réalisant un tel processus, 8 inversions sont nécessaires.
+Pour améliorer ce résultat il faudra retenir toutes les inversions  permettant d’augmenter le score, et pas nécessairement celles permettant de trier le début de la séquence. Nous raisonnerons en terme d’arbre, en mémorisant tous les chemins menant à la solution nous pourront retrouver la solution optimale.
+Nous avons ainsi implémenté la fonction <em>permutation</em> qui énumère  les inversions possibles.  Toutes les inversions permettant de conserver ou d’augmenter le score seront conservées. Reprenons l’exemple :</p>
+<img alt="_images/permutation.jpeg" src="_images/permutation.jpeg" />
+<p>La fonction <em>permutation</em> prend en argument le score courant de la séquence et fait appel à la fonction <em>end_ord</em> qui retourne l’indice de la dernière lettre bien placée. Puis elle appelle la fonction <em>inversion</em> qui permet de permuter l’ordre de la séquence. Cette fonction est appelée itérativement pour  i  allant de 2 à la taille de la séquence à inverser. La fonction <em>permutation</em> retourne  une liste des inversions ayant permis d’augmenter ou de conserver le score, à chaque élément de la liste contient donc la séquence inversée, son score, et sa distance à l’origine (soit le nombre d’inevrsions nécessaire qui ont permis d’obtenir cet état d’ordonnancement).</p>
+<p>Une seconde version de permutation, nommée <em>permutation_v2</em> a été écrite pour prendre en compte toutes les inversions  y compris celles en dehors des éléments situés entre la fin de la séquence triée et la première lettre minimale. Elle permet ainsi de tester d’avantage de combinaisons, toutefois le temps de calcul est fortement augmenté. Seules les inversions permettant d’augmenter ou de maintenir le score seront conservées, de plus si la distance à l’origine d’une possibilité est supérieure à <em>taille de seq + 1</em>, cette possibilité est rejeté, car alors quelque soit le scénario il sera sous optimal.   Reprenons  l’exemple :</p>
+<img alt="_images/permutation_v2.jpeg" src="_images/permutation_v2.jpeg" />
+<p>Les avantages de la fonction <em>permutation_v2</em> peuvent être explicitement montrés dans l’exemple suivant :</p>
+<img alt="_images/CHRIIIR.jpeg" src="_images/CHRIIIR.jpeg" />
+<p>Remarque : <em>permutation</em> prend un troisième argument qui est la distance à l’origine que nous introduirons dans le paragraphe suivant.</p>
+</div>
+<div class="section" id="construction-de-l-arbre">
+<h2>Construction de l’arbre :<a class="headerlink" href="#construction-de-l-arbre" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Afin de trier la séquence nous allons générer des séries d’inversions, pour cela nous créons une fonction <em>nb_inversion</em>, qui fait appel à <em>permutation</em> ou à <em>permutation_v2</em> selon l’option choisie par l’utilisateur. La fonction <em>nb_inversion</em> prend en argument la liste à trier. Elle calcule son score initial et appelle une première fois  <em>permutation/_v2</em>, les résultats retournés sont mémorisés dans une pile. Tant que cette pile n’est pas vide*nb_inversion* appelle  <em>permutation/_v2</em> en prenant le premier élément de la pile, soit une des liste à  retenue par <em>permutation</em> au tour précédent. Cet liste est associée à son score courant et à sa distance à l’origine, qui a été incrémentée d’une unité. L’élément de la pile qui vient d’être traité est supprimé et les résultats retournés par ce nouvel appel  sont placés en tête. Ceci permet de continuer le trie de la séquence à partir d’une des proposition retenue au tour précédent.  Le parcours d’une branche est terminé lorsque le score est équivalent à celui de la séquence triée. La distance à l’origine qui correspond au nombre d’inversions nécessaires pour trier une branche est retenue. À la fin du parcours de l’arbre on obtient une liste des distances. La fonction <em>nb_inversion</em> retourne finalement la distance minimale.</p>
+<img alt="_images/arbre_inv.jpeg" src="_images/arbre_inv.jpeg" />
+</div>
+<div class="section" id="generation-d-echantillons-aleatoires">
+<h2>Génération d’échantillons  aléatoires :<a class="headerlink" href="#generation-d-echantillons-aleatoires" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Afin d’évaluer si les nombres minimaux d’inversions observés, pour les gènes 6, 7 et 13, pourraient être dus au hasard, nous avons répété le processus sur des séquences aléatoires. Pour ce faire nous avons créer une fonction nommée  <em>scenario_aleatoire</em>. Elle prend en entrée une liste, et un nombre d’itérations. Pour chaque itération elle génère une version aléatoire de la liste donnée en entrée (cf :<em>seq_aleatoire</em>). Puis elle fait appel à la fonction <em>nb_inversion</em>, pour déterminer le nombre minimal d’inversions nécessaire pour trier cette séquence aléatoire. Les résultats de chaque itération sont conservés dans une liste. Cette liste peut être donnée en argument à la fonction <em>stat_parente</em>, qui étant donné  le nombre minimal d’inversions observé pour la séquence d’intérêt, retourne la probabilité d’observer un tel résultat sous l’hypothèse du hasard. La statistique générée correspond à la proportion de résultats aléatoires qui sont inférieurs au résultat d’intérêt. <em>Remarque : * La fonction *scenario_aleatoire</em> peut écrire les résultats dans un fichier texte, si l’option est activée. Ceci a été implémenté en raison du temps de calcul nécessaire pour les séquences de grandes tailles (&gt;13).</p>
+</div>
+<div class="section" id="resultats">
+<h2>Résultats :<a class="headerlink" href="#resultats" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Nous obtenons les résultats suivants:</p>
+<ul class="simple">
+<li>Pour le chromosome III_R de taille 7, l’ordre des gènes de <em>Melanosgater</em> est <em>A E B C F D G</em>. Le nombre d’inversion minimal est de 3. La proportion de séquences aléatoires de longueur 7 obtenant un score inférieur est de 0.316, pour 500 tirages.</li>
+<li>Pour le chromosome III_L  dont l’ordre des gènes est <em>C F E B A D</em>, le nombre minimal d’inversion obtenu est de 3. La proportion de séquences aléatoires de taille 6 ayant un score inférieur est de $0.17$ (pour 500 tirages).</li>
+<li>Pour le chromosome II_R dont l’ordre des gènes est <em>A C E B F D</em>, le nombre minimal d’inversion obtenu est de 4. La proportion de séquences aléatoires de taille 6 ayant un score inférieur est de 0.602 (pour 500 tirages).</li>
+<li>Pour le chromosome II_L dont l’ordre des gènes est <em>D E F A C B</em>, le nombre minimal d’inversion obtenu est de 2. La proportion de séquences aléatoires de taille 6 ayant un score inférieur est de 0.048 (pour 500 tirages).</li>
+<li>Pour le chromosome X dont l’ordre des gènes est <em>L H F E B A D C K I J G M</em>, le nombre minimal d’inversion obtenu est de 6. La proportion de séquences aléatoire de taille 6 ayant un score inférieur est de 0.015 (pour 66 tirages). Ce résultats permet de corriger les affirmations de Sturtevant, qui calculait pour ce chromosome un nombre d’inversion minimal de 7.</li>
+</ul>
+<p>Les nombres d’inversions minimaux ont été calculés grâce à l’utilisation de <em>permutation_v2</em>, pour les séquences biologiques. Cependant en raison des temps de calcul, la fonction <em>permutation</em> a été utilisée pour les séquences aléatoires. Il est ainsi probable que les proportions calculées soient quelque peu biaisées.
+D’après ces résultats pour les chromosomes X et II_L la probabilité d’obtenir par hasard les nombres minimaux d’inversions observés, de respectivement 6 et 2, est faible <em>&lt;0.05</em>. Ainsi on peut affirmer qu’il existe un lien de parenté entre les deux espèces de drosophile <em>Pseudoobscura</em> et <em>D. Melanogaster</em>. Pour les chromosomes II_R, III_L et III_R, les nombres nombres minimaux d’inversions obtenus pourraient être dûs au hasard, la structure de ces chromosomes est donc moins conservés.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Nombre d'inversion minimal</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction :</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Programme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contexte.html">Contexte historique et biologique :</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Implémentation d’une heuristique optimisant le nombre d’inversion :</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#calcul-d-un-score-d-organisation">Calcul d’un score d’organisation :</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#enumeration-des-permutations">Énumération des permutations :</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#construction-de-l-arbre">Construction de l’arbre :</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#generation-d-echantillons-aleatoires">Génération d’échantillons  aléatoires :</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#resultats">Résultats :</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="contexte.html" title="Chapitre précédent">Contexte historique et biologique :</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Recherche rapide</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Louise Gsell Emilie Mathian.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/Heuristique.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
