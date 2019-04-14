@@ -46,7 +46,7 @@ for(i in 1:n){
           # alors on fusionne les fragments i et j (qui deviennent un unique fragment i)
           data_fusion$V8[i]=data_fusion$V8[j] # q.end
           data_fusion$V10[i]=data_fusion$V10[j] #s.end
-          data_fusion$V7[j]=-1 # q.start >> empêche la ligne j d'être considérée dans les boucles suivantes 
+          data_fusion$V7[j]=-1 # q.start >> emp??che la ligne j d'??tre consid??r??e dans les boucles suivantes 
 
         }
       }
@@ -143,7 +143,7 @@ taux_garde = simi_garde/max(s.end) # on divise par la taille du g??nome s
 # CHEZ LA TOTALITE DES ALIGNEMENTS 
 long_segments_tot = sqrt((q.end- q.start)^2 + (s.end- s.start)^2 ) # longeur des segments de la dot_matrix
 simi_tot = sum(long_segments_tot)/length(q.start) # on divise par le nombre de segments
-taux_tot = simi_tot/max(s.end) # on divise par la taille du génome s
+taux_tot = simi_tot/max(s.end) # on divise par la taille du g??nome s
 
 
 ###########################################################################

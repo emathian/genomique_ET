@@ -688,5 +688,128 @@ def stat_parente(v_alea, d_obs):
 
 if __name__ == '__main__':    
 
-    import doctest
-    doctest.testmod()
+    #import doctest
+    #doctest.testmod()
+
+    print("\n  VERSION 1  : \n")
+    print("\n  DROSOPHILES  : <3  \n")
+
+    chrIIIR= "aebcfdg"
+    print("Organisation du chromosome III (r) : ", chrIIIR)
+    LIIIR = ConvertAsci(chrIIIR)
+    print('SCORE CHR ,', score(LIIIR))
+    d_obs_IIIR = nb_inversion(LIIIR)
+    print('Pour le Chr III R  le nombre minimal d inversion est   : ', d_obs_IIIR)
+    alea_IIIR , moy_dist_IIIR= scenario_aleatoire(LIIIR,500, False)
+    stat_aleatoire_IIIR = stat_parente(alea_IIIR, d_obs_IIIR)
+    print("Distance moyenne : ", moy_dist_IIIR)
+    print("Probabilite qu'une telle distance soit due au hasard :  ", stat_aleatoire_IIIR , "(sur %s sequence aleatoires) \n"%len(alea_IIIR ))
+
+
+    chrIIIL= "CFEBAD"
+    print("Organisation du chromosome III (l) : ", chrIIIL)
+    LIIIL = ConvertAsci(chrIIIL)
+    d_obs_IIIL = nb_inversion(LIIIL)
+    print('Pour le Chr III R  le nombre minimal d inversion est   : ', d_obs_IIIL)
+    alea_IIIL , moy_dist_IIIL= scenario_aleatoire(LIIIL,500, False)
+    stat_aleatoire_IIIL = stat_parente(alea_IIIL, d_obs_IIIL)
+    print("Distance moyenne : ", moy_dist_IIIL)
+    print("Probabilite qu'une telle distance soit due au hasard :  ", stat_aleatoire_IIIL , "(sur %s sequence aleatoires) \n"%len(alea_IIIL ))
+
+
+    chrIIR= "ACEBFD"
+    print("Organisation du chromosome II (r) : ", chrIIR)
+    LIIR = ConvertAsci(chrIIR)
+    d_obs_IIR = nb_inversion(LIIR)
+    print('Pour le Chr III R  le nombre minimal d inversion est   : ', d_obs_IIR)
+    alea_IIR , moy_dist_IIR= scenario_aleatoire(LIIR,500, False)
+    stat_aleatoire_IIR = stat_parente(alea_IIR, d_obs_IIR)
+    print("Distance moyenne : ", moy_dist_IIR)
+    print("Probabilite qu'une telle distance soit due au hasard :  ", stat_aleatoire_IIR , "(sur %s sequence aleatoires) \n"%len(alea_IIR ))
+
+
+    chrIIL= "DEFACB"
+    print("Organisation du chromosome II (l) : ", chrIIL)
+    LIIL = ConvertAsci(chrIIL)
+    d_obs_IIL = nb_inversion(LIIL)
+    print('Pour le Chr III R  le nombre minimal d inversion est   : ', d_obs_IIL)
+    alea_IIL, moy_dist_IIL = scenario_aleatoire(LIIL,500, False)
+    print("Distance moyenne : ", moy_dist_IIL)
+    stat_aleatoire_IIL = stat_parente(alea_IIL, d_obs_IIL)
+    print("Probabilite qu'une telle distance soit due au hasard :  ", stat_aleatoire_IIL , "(sur %s sequence aleatoires) \n"%len(alea_IIL ))
+
+
+    chrX= "LHFEBADCKIJGM"
+    print("Organisation du chromosome X : ", chrX)
+    LX = ConvertAsci(chrX)
+    d_obs_X = nb_inversion(LX)
+    print('Pour le Chr III R  le nombre minimal d inversion est   : ', d_obs_X)
+    #alea_X = scenario_aleatoire(LX,500, False)[0] 
+    data13 = pd.read_csv('13_genes.txt', header = None, sep='\t')
+    res13 = list(data13.iloc[:,1])
+    moy_dist_X = sum(res13)/len(res13)
+    stat_aleatoire_X = stat_parente(res13, d_obs_X)
+    print("Distance moyenne : ", moy_dist_X)
+    print("Probabilite qu'une telle distance soit due au hasard :  ", stat_aleatoire_X , "(sur %s sequence aleatoires) \n"%len(res13 ))
+
+
+    print("\n  VERSION 2  : \n")
+    print("\n  DROSOPHILES  : <3  \n")
+
+    chrIIIR= "aebcfdg"
+    print("Organisation du chromosome III (r) : ", chrIIIR)
+    LIIIR = ConvertAsci(chrIIIR)
+    print('SCORE CHR ,', score(LIIIR))
+    d_obs_IIIR = nb_inversion(LIIIR)
+    print('Pour le Chr III R  le nombre minimal d inversion est   : ', d_obs_IIIR)
+    alea_IIIR = scenario_aleatoire(LIIIR,20, False)[0] 
+    stat_aleatoire_IIIR = stat_parente(alea_IIIR, d_obs_IIIR)
+    print("Probabilite qu'une telle distance soit due au hasard :  ", stat_aleatoire_IIIR , "(sur %s sequence aleatoires) \n"%len(alea_IIIR ))
+
+
+    chrIIIL= "CFEBAD"
+    print("Organisation du chromosome III (l) : ", chrIIIL)
+    LIIIL = ConvertAsci(chrIIIL)
+    d_obs_IIIL = nb_inversion(LIIIL, True)
+    print('Pour le Chr III RL le nombre minimal d inversion est   : ', d_obs_IIIL)
+    alea_IIIL = scenario_aleatoire(LIIIL,20, False)[0] 
+    stat_aleatoire_IIIL = stat_parente(alea_IIIL, d_obs_IIIL)
+    print("Probabilite qu'une telle distance soit due au hasard :  ", stat_aleatoire_IIIL , "(sur %s sequence aleatoires) \n"%len(alea_IIIL ))
+
+
+    chrIIR= "ACEBFD"
+    print("Organisation du chromosome II (r) : ", chrIIR)
+    LIIR = ConvertAsci(chrIIR)
+    d_obs_IIR = nb_inversion(LIIR, True)
+    print('Pour le Chr II R  le nombre minimal d inversion est   : ', d_obs_IIR)
+    alea_IIR = scenario_aleatoire(LIIR,20, False)[0] 
+    stat_aleatoire_IIR = stat_parente(alea_IIR, d_obs_IIR)
+    print("Probabilite qu'une telle distance soit due au hasard :  ", stat_aleatoire_IIR , "(sur %s sequence aleatoires) \n"%len(alea_IIR ))
+
+
+    chrIIL= "DEFACB"
+    print("Organisation du chromosome II (l) : ", chrIIL)
+    LIIL = ConvertAsci(chrIIL)
+    d_obs_IIL = nb_inversion(LIIL, True)
+    print('Pour le Chr II L  le nombre minimal d inversion est   : ', d_obs_IIL)
+    alea_IIL = scenario_aleatoire(LIIL,20, False)[0] 
+    stat_aleatoire_IIL = stat_parente(alea_IIL, d_obs_IIL)
+    print("Probabilite qu'une telle distance soit due au hasard :  ", stat_aleatoire_IIL , "(sur %s sequence aleatoires) \n"%len(alea_IIL ))
+
+    chrX= "LHFEBADCKIJGM"
+    print("Organisation du chromosome X : ", chrX)
+    LX = ConvertAsci(chrX)
+    d_obs_X = nb_inversion(LX, True)
+    print('Pour le Chr X  le nombre minimal d inversion est  : ', d_obs_X)
+    
+    #alea_X = scenario_aleatoire(LX,500, False)[0] 
+    
+    data13 = pd.read_csv('13_genes.txt', header = None, sep='\t')
+    res13 = list(data13.iloc[:,1])
+    print(sum(res13)/len(res13))
+    stat_aleatoire_X = stat_parente(res13, d_obs_X)
+    print("Probabilite qu'une telle distance soit due au hasard :  ", stat_aleatoire_X , "(sur %s sequence aleatoires) \n"%len(res13 ))
+
+
+
+
