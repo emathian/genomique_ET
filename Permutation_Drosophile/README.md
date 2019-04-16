@@ -14,7 +14,7 @@ Ce programme est mis à votre disposition sur :
 Toutes les informtions concernant ce programme sont disponible sur : 
 https://bon-alphabet.readthedocs.io/en/latest/Heuristique.html#enumeration-des-permutations
 Une erreur s'est produite, le code documenté n'apparaît pas dans ReadtheDocs. Nous vous prions
-de bien vouloir vous référer aux fichiers HTML contenu dans le dossier docs et d'ouvrir le fichier intro.html. 
+de bien vouloir vous référer aux fichiers HTML contenu dans le dossier `docs/html` et d'ouvrir le fichier intro.html. 
 
 # Installation 
  

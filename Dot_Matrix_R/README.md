@@ -1,7 +1,7 @@
 
 # Introduction 
 
-Ce programme a été écrit sous R, il permet de construire la matrice des positions des gènes orthologues, entre la souche médiévale de la peste noire et la souche actulle de  Yersinia pestis CO92. 
+Ce programme a été écrit sous R dans le fichier `dot_matrix_vf.R` , il permet de construire la matrice des positions des gènes orthologues, entre la souche médiévale de la peste noire et la souche actulle de  Yersinia pestis CO92. 
 
 # Dot matrix initiale
 
