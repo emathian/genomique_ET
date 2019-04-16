@@ -8,4 +8,4 @@ Ce projet s'intéresse aux inversions chromosimiques, il est composé de 2 parti
 
 L'ensemble du projet est résumé dans le document `Genomique_projet_S2.pdf`, contenu dans le dossier `Rapport`.
 
-** Le sujet et le support pédagogique de ce projet sont contenus dans le dossier `Sujet`. **
+**Le sujet et le support pédagogique de ce projet sont contenus dans le dossier `Sujet`.**
