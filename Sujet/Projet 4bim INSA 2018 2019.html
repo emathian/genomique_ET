@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>Projet 4bim INSA 2018 2019</title>
+</head>
+<body>
+<div style="text-align: center;"><big style="font-weight: bold;"><big><br>
+</big></big>
+<h1>Projet MIG INSA 4bim 2018 2019 : r&eacute;arrangements dans le g&eacute;nome de la bact&eacute;rie <i>Yersinia Pestis</i></h1>
+</div>
+<br>
+
+<h3> Aspects Pratiques</h3>
+
+Vous pouvez vous organiser par deux ou trois pour ce projet.
+Pour chaque groupe, r&eacute;digez un rapport de 10 pages maximum sur vos travaux et retournez-le
+avec vos programmes et leur mode d'emploi &agrave; Eric.Tannier@univ-lyon1.fr avant le 26 avril 2019.
+M&ecirc;me adresse pour toutes les questions jusqu'&agrave; cette date.
+Le langage de programmation est libre.
+
+
+
+<h3> Questions </h3>
+
+<h4> A/ Finir le TP commenc&eacute; en cours </h4>
+
+1/ Pour une permutation donn&eacute;, calculez le nombre d'adjacences, c'est &agrave; dire le nombre de couples de lettres cons&eacute;cutives dans la permutations et dans l'ordre alphab&eacute;tique, plus un si la premi&egrave;re ou la derni&egrave;re lettres sont plac&eacute;es correctement.
+
+<br>
+
+2/ Pour une permutation donn&eacute;, g&eacute;n&eacute;rez toutes les permutations obtenues avec une inversion et qui augmentent le nombre d'adjacences
+
+<br>
+
+3/ &Eacute;crivez et impl&eacute;mentez un algorithme qui donne le nombre minimum d'inversions pour transformer une permutation de lettres en l'ordre alphab&eacute;tique. Pour cela, vous pouvez appliquer r&eacute;cursivement la fonction pr&eacute;c&eacute;dente jusqu'&agrave; obtenir l'ordre alphab&eacute;tique.
+
+<br>
+
+4/ En g&eacute;n&eacute;rant un &eacute;chantillon de permutations al&eacute;atoires, corriger l'estimation de Sturtevant, Novitski, 1941 sur la distance moyenne d'inversions pour des chromosomes ayant 6, 7 ou 13 g&egrave;nes. 
+
+<br>
+
+5/ Quelle est la probabilit&eacute; (approxim&eacute;e avec la fr&eacute;quence dans les simulations) d'obtenir la mesure de similarit&eacute; observ&eacute;e dans les donn&eacute;es si l'ordre des g&egrave;nes n'est pas conserv&eacute;? Que peut-on en conclure sur la conservation de l'ordre des g&egrave;nes chez les drosophiles?
+
+<h4> B/ Comparaisons de deux g&eacute;nomes bact&eacute;riens complets </h4>
+
+Les nouvelles technologies de s&eacute;quen&ccedil;age permettent de s&eacute;quencer l'ADN ancien. Il y a quelques ann&eacute;es, est parue <a href="http://www.lemonde.fr/planete/article/2011/10/13/au-c-ur-du-genome-de-la-peste-noire_1586542_3244.html">la premi&egrave;re s&eacute;quence d'un g&eacute;nome bact&eacute;rien disparu, celui de l'organisme responsable de la peste noire du moyen-&acirc;ge</a>.
+
+<br>
+
+Le but de ce projet est de comparer ce g&eacute;nome &agrave; un de ses descendants actuel, notamment en termes d'organisation du g&eacute;nome.
+
+<br>
+
+<h3> 1/ T&eacute;l&eacute;chargez les deux s&eacute;quences chromosomiques &agrave; comparer </h3>
+
+Vous pourrez trouver la s&eacute;quence du chromosome du g&eacute;nome m&eacute;di&eacute;val <a href="1348_chromosome">ici</a>.
+
+<br>
+
+Trouvez la s&eacute;quence du chromosome de la souche actuelle "Yersinia pestis CO92" sur le site du <a href="http://www.ncbi.nlm.nih.gov/">NCBI</a>
+
+<br>
+
+Comparez les tailles de g&eacute;nomes, comptez le nombre de sites non d&eacute;finis sur chacun des deux.
+
+<br>
+
+<h3> 2/ Alignez les chromosomes </h3>
+
+Sur le site du NCBI, avec <a href="http://blast.ncbi.nlm.nih.gov/Blast.cgi?PROGRAM=blastn&BLAST_PROGRAMS=megaBlast&PAGE_TYPE=BlastSearch&SHOW_DEFAULTS=on&LINK_LOC=blasthome">BLAST</a>, alignez les deux s&eacute;quence chromosomiques, option MEGABLAST parce que les s&eacute;quences sont assez similaires (650 ans de divergence).
+
+Vous pouvez utiliser le num&eacute;ro d'accession pour le chromosome moderne.
+
+
+<br>
+
+Visualisez le "dotplot" de ces alignements (Dot Matrix View sur les r&eacute;sultats de Blast), et
+T&eacute;l&eacute;chargez tous les alignements sous forme de tableau (Download->Table).
+
+<img src="hit_matrix.cgi.png">
+
+<br>
+
+Faites attention &agrave; la direction relative des alignements, elle vous sera utile au cours du projet.
+
+
+<h3> 3/ Filtrer les orthologies </h3>
+
+Sur le dotplot, vous voyez des blocs orthologues (longues lignes diagonales) et beaucoup de r&eacute;p&eacute;titions (points dispers&eacute;s organis&eacute;s en grille).
+Concevez une m&eacute;thode qui r&eacute;cup&egrave;re les coordonn&eacute;es des blocs orthologues, c'est &agrave; dire filtrer les donn&eacute;es pour &eacute;liminer les r&eacute;p&eacute;titions.
+
+<br>
+
+Comparer la visualisation des donn&eacute;es filtr&eacute;es avec les donn&eacute;es brutes en refaisant le dotplot apr&egrave;s filtrage. 
+
+<br>
+
+Comparez le taux de similarit&eacute; entre les alignements gard&eacute;s et les alignements filtr&eacute;s. La dynamique
+de duplication dans le g&eacute;nome est-elle plus ancienne ou plus r&eacute;cente que le moyen-&acirc;ge?
+
+<br>
+
+<h3> 4/ R&eacute;arrangements </h3>
+
+Combien d'inversions s&eacute;parent la souche m&eacute;di&eacute;vale de la souche actuelle? Utilisez les donn&eacute;es filtr&eacute;es et la formule d=n-c, o&ugrave; d et le nombre d'inversions, n est le nombre de marqueurs orthologues, et c est le nombre de cycles dans le graphe de comparaison.
+
+<br>
+
+Les inversions concernent-elles des segments al&eacute;atoires du g&eacute;nome? Pour r&eacute;pondre &agrave; cette question, simulez des inversions al&eacute;atoires sur le m&ecirc;me nombre de marqueurs, et comparez d et c. Quelle est la probabilit&eacute; d'obtenir le rapport observ&eacute; entre ces deux valeurs? Quel type de mod&egrave;le faudrait-il construire pour rendre compte de cette valeur observ&eacute;e?
+
+<br><br>
+
+
+
+</body>
+</html>
