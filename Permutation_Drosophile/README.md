@@ -3,7 +3,7 @@
 
 Ce projet s'intéresse à la comparaison de génome à l'échelle chromosomique. Cette comparaison repose sur l'hypothèse que l'ordre des gènes sur les chromosomes d'organismes apparentés est plus ou moins conservé. Le nombre d'inversions nécessaires pour retrouver l'ordre des gènes orthologues entre un organisme B supposé apparenté à un organisme A, est ainsi l'objet d'étude. 
 
-Une heuristique sera tout d'abord implémentée pour optimiser le nombre minimal d'inversion nécessaire pour retrouver l'ordre d'une séquence de gènes. Cette méthode permettra d'estimer la distance évolutive séparant deux espèces, mais son utilisation sera limitée par la taille de la comparaison à effectuer. Ainsi seulement un petit nombre de gènes ne pourra être pris en compte. 
+Une heuristique a été implémentée pour optimiser le nombre minimal d'inversions nécessaires pour retrouver l'ordre d'une séquence de gènes. Cette méthode permettra d'estimer la distance évolutive séparant deux espèces, mais son utilisation est limitée par la taille de la comparaison à effectuer. Ainsi seulement un petit nombre de gènes ne pourra être pris en compte. 
 
 # bonne_alphabet package
 
@@ -23,4 +23,6 @@ pip install --index-url https://test.pypi.org/simple/ --no-deps bonne-alphabet
 
 # Tutoriel 
 
-Le tutoriel est disponible sur https://github.com/emathian/comment_auto, dans fichier "Tutorial_bone_alphabet.ipynb"
+Le tutoriel est disponible sur https://github.com/emathian/comment_auto, dans fichier "Tutorial_bone_alphabet.ipynb".
+
+*La documentation liée à ce programme résulte d'un travail parallèle pour le cours sur le développement et le déploiement d'applications.*
