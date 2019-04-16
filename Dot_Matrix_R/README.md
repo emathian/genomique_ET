@@ -1,11 +1,10 @@
 
 # Introduction 
 
-Ce programme a été écrit sous R dans le fichier `dot_matrix_vf.R` , il permet de construire la matrice des positions des gènes orthologues, entre la souche médiévale de la peste noire et la souche actulle de  Yernisia pestis CO92. 
+Ce programme a été écrit sous R, il est contenu dans le fichier `dot_matrix_vf.R`.  Il permet de construire la matrice des positions des gènes orthologues, partagés par la souche médiévale de la peste noire et la souche actulle de Yernisia pestis CO92. 
 
 # Dot matrix initiale
 
-Le génome actuel possède 3551058 bases et elles sont toutes définies alors que le génome médiéval possède 3533579 bases dont 25769 ne sont pas définies. Le génome actuel est donc plus grand que le génome médiéval.
 Nous avons aligné les deux séquences sur BLAST et nous avons ainsi pu reproduire sur R la dot matrix correspondante :
 
 ![Dot matrix initiale](dot_matrix_non_filtree.png)
